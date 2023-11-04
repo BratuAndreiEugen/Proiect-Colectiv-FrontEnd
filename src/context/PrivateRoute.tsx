@@ -3,7 +3,7 @@ import { Redirect, Route } from "react-router-dom";
 import { AuthContext, AuthState } from "./AuthProvider";
 import { getLogger } from "../utils";
 
-const log = getLogger("Login");
+const log = getLogger("PrivateRoute");
 
 export interface PrivateRouteProps {
   component: any;
