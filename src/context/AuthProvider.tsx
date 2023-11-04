@@ -1,20 +1,20 @@
 import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { getLogger } from "../utils";
-import { login as loginApi } from "../requests";
+import { login as loginRequest } from "../requests";
+import { mockLogin as loginMockRequest } from "../requests";
 
 const log = getLogger("AuthProvider");
 
-type LoginFn = (username?: string, password?: string) => void;
+type LoginFn = (username: string, password: string) => void;
 
 export interface AuthState {
   authenticationError: Error | null;
   isAuthenticated: boolean;
   isAuthenticating: boolean;
   login?: LoginFn;
-  pendingAuthentication?: boolean;
-  username?: string;
-  password?: string;
+  username: string;
+  password: string;
   token: string;
 }
 
@@ -22,7 +22,8 @@ const initialState: AuthState = {
   isAuthenticated: false,
   isAuthenticating: false,
   authenticationError: null,
-  pendingAuthentication: false,
+  username: "",
+  password: "",
   token: "",
 };
 
@@ -38,26 +39,34 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isAuthenticated,
     isAuthenticating,
     authenticationError,
-    pendingAuthentication,
     token,
+    username,
+    password,
   } = state;
+
+  console.log(state);
+
   const login = useCallback<LoginFn>(loginCallback, []);
-  useEffect(authenticationEffect, [pendingAuthentication]);
+
+  useEffect(authenticationEffect, [isAuthenticating]);
   const value = {
     isAuthenticated,
     login,
     isAuthenticating,
     authenticationError,
     token,
+    username,
+    password,
   };
+
   log("render");
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 
-  function loginCallback(username?: string, password?: string): void {
+  function loginCallback(username: string, password: string): void {
     log("login");
     setState({
       ...state,
-      pendingAuthentication: true,
+      isAuthenticating: true,
       username,
       password,
     });
@@ -71,8 +80,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     async function authenticate() {
-      if (!pendingAuthentication) {
-        log("authenticate, !pendingAuthentication, return");
+      if (!isAuthenticating) {
+        log("authenticate, !isAuthenticating, return");
         return;
       }
       try {
@@ -82,7 +91,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           isAuthenticating: true,
         });
         const { username, password } = state;
-        const { token } = await loginApi(username, password);
+        await loginMockRequest(username, password);
         if (canceled) {
           return;
         }
@@ -90,7 +99,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setState({
           ...state,
           token,
-          pendingAuthentication: false,
           isAuthenticated: true,
           isAuthenticating: false,
         });
@@ -102,7 +110,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setState({
           ...state,
           authenticationError: error as Error,
-          pendingAuthentication: false,
           isAuthenticating: false,
         });
       }
