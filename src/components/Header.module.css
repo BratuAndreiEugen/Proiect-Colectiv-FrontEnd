@@ -1,0 +1,52 @@
+.header ion-toolbar {
+  padding: 0 30px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header ion-icon {
+  cursor: pointer;
+}
+
+.username {
+  font-size: 20px;
+}
+
+.button {
+  cursor: pointer;
+  margin-left: 15px;
+  font-size: 35px;
+  margin-top: 6px;
+}
+
+.button {
+  transition: transform 0.2s ease-in-out;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .header {
+    margin-bottom: 20px;
+  }
+
+  .button {
+    margin-left: 5px;
+    font-size: 35px;
+    margin-top: 2px;
+  }
+
+  .header ion-toolbar {
+    padding: 0 12px;
+  }
+}
