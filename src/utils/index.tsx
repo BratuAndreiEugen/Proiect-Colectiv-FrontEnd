@@ -11,20 +11,19 @@ export interface ResponseProps<T> {
   data: T;
 }
 
-export function withLogs<T>(
+export async function withLogs<T>(
   promise: Promise<ResponseProps<T>>,
   fnName: string
 ): Promise<T> {
   log(`${fnName} - started`);
-  return promise
-    .then((res) => {
-      log(`${fnName} - succeeded`);
-      return Promise.resolve(res.data);
-    })
-    .catch((err) => {
-      log(`${fnName} - failed`, err);
-      return Promise.reject(err);
-    });
+  try {
+    const res = await promise;
+    log(`${fnName} - succeeded`);
+    return await Promise.resolve(res.data);
+  } catch (err) {
+    log(`${fnName} - failed`, err);
+    return await Promise.reject(err);
+  }
 }
 
 export const config = {
