@@ -1,32 +1,59 @@
-import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import PersonIcon from "@mui/icons-material/Person";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { useHistory } from "react-router";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthProvider";
+import { getLogger } from "../utils";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
+const log = getLogger("Login");
+
+interface LoginState {
+  username?: string;
+  password?: string;
+}
 
 export default function Login() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const isPhone = useMediaQuery("(max-width:420px)");
+  const [state, setState] = useState<LoginState>({});
+  const { username, password } = state;
+  const { isAuthenticated, isAuthenticating, login, authenticationError } =
+    useContext(AuthContext);
+  const history = useHistory();
+
+  const handleLogin = useCallback(() => {
+    log("handleLogin...");
+    if (!username) {
+      alert("The username cannot be empty");
+      return;
+    }
+    if (!password) {
+      alert("The password cannot be empty");
+      return;
+    }
+    login?.(username, password);
+  }, [username, password]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      log("redirecting to home");
+      history.push("/");
+    }
+  }, [isAuthenticated]);
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: isPhone ? 20 : 18,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -38,16 +65,17 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
             autoFocus
+            onChange={(e) => setState({ ...state, username: e.target.value })}
           />
           <TextField
             margin="normal"
@@ -58,18 +86,15 @@ export default function Login() {
             type="password"
             id="password"
             autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
+            onChange={(e) => setState({ ...state, password: e.target.value })}
           />
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            onClick={handleLogin}
           >
-            Sign In
+            Login
           </Button>
           <Box alignItems="center" justifyContent="center" display="flex">
             <Link href="/register" variant="body2">
