@@ -1,0 +1,52 @@
+.recipes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 50%;
+  margin: auto;
+}
+
+.footer {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.footer ion-button {
+  transition: transform 0.2s ease-in-out;
+}
+
+.footer ion-button:hover {
+  transform: scale(1.05);
+}
+
+.addButton {
+  font-size: 40px;
+  color: black;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  transform: scale(1.05);
+}
+
+.content {
+  width: calc(100% + 25px);
+}
+
+.content::part(scroll) {
+  padding-right: 7px;
+}
+
+@media (max-width: 768px) {
+  .recipes {
+    width: 70%;
+    gap: 0px;
+  }
+}
