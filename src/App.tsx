@@ -25,7 +25,6 @@ import Login from "./pages/Login";
 import { PrivateRoute } from "./context/PrivateRoute";
 import Register from "./pages/Register";
 import FeedPage from "./pages/Feed";
-import "./styles.css";
 
 setupIonicReact();
 
