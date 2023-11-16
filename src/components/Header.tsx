@@ -9,6 +9,7 @@ import classes from "./Header.module.css";
 import { personCircleOutline, searchCircleOutline } from "ionicons/icons";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
+import {Link} from "react-router-dom";
 
 function Header() {
   const { username } = useContext(AuthContext);
@@ -21,7 +22,9 @@ function Header() {
             <IonText>{username}</IonText>
           </div>
           <div>
-            <IonIcon icon={personCircleOutline} className={classes.button} />
+            <Link to={`/user/${username}`} className={classes.button}>
+              <IonIcon icon={personCircleOutline} />
+            </Link>
             <IonIcon icon={searchCircleOutline} className={classes.button} />
           </div>
         </div>

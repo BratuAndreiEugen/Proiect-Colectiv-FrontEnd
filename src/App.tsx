@@ -25,6 +25,7 @@ import Login from "./pages/Login";
 import { PrivateRoute } from "./context/PrivateRoute";
 import Register from "./pages/Register";
 import FeedPage from "./pages/Feed";
+import UserProfile from "./pages/UserProfile";
 
 setupIonicReact();
 
@@ -37,6 +38,7 @@ const App: React.FC = () => (
           <Route path="/register" component={Register} />
           <Route path="/" render={() => <Redirect to="/home" />} exact />
           <PrivateRoute path="/home" component={FeedPage} exact />
+          <PrivateRoute path="/user/:username" component={UserProfile} />
         </AuthProvider>
       </IonRouterOutlet>
     </IonReactRouter>
