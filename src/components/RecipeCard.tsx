@@ -7,20 +7,20 @@ import {
   IonCardContent,
   IonImg,
 } from "@ionic/react";
-import { Recipe } from "../data/recipe";
 import classes from "./RecipeCard.module.css";
+import { RecipeShort } from "../model/recipe";
 
 interface RecipeCardProps {
-  recipe: Recipe;
+  recipe: RecipeShort;
 }
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   return (
     <IonCard className={classes.recipeCard}>
-      <IonImg src={recipe.photoUrl} />
+      <IonImg src={recipe.thumbnailLink} />
       <IonCardHeader>
         <IonCardTitle>{recipe.title}</IonCardTitle>
-        <IonCardSubtitle>By {recipe.username}</IonCardSubtitle>
+        <IonCardSubtitle>By {recipe.posterId}</IonCardSubtitle>
       </IonCardHeader>
     </IonCard>
   );

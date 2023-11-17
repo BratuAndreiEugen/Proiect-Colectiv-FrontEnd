@@ -1,15 +1,14 @@
-import { IonContent, IonPage, IonFooter, IonIcon, IonMenu, IonText, IonTitle, IonButton } from "@ionic/react";
+import { IonContent, IonPage, IonFooter, IonIcon } from "@ionic/react";
 import RecipeCard from "../components/RecipeCard";
-import { recipes } from "../data/recipe";
 import Header from "../components/Header";
 import { addCircleOutline } from "ionicons/icons";
 import classes from "./Feed.module.css";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthProvider";
-import Button from "@mui/material/Button";
+
 import Drawer from "../components/Drawer";
+import useRecipes from "../hooks/useRecipes";
 
 const RecipeFeed: React.FC = () => {
+  const { recipes, loading, error } = useRecipes();
 
   return (
     <>
