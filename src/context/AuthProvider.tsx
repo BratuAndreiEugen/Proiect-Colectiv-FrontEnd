@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { getLogger } from "../utils";
-import { login as loginRequest } from "../requests";
-import { mockLogin as loginMockRequest } from "../requests";
+import { login as loginRequest } from "../requests/authService";
+import { useHistory } from "react-router";
 
 const log = getLogger("AuthProvider");
 
@@ -13,18 +13,19 @@ export interface AuthState {
   isAuthenticated: boolean;
   isAuthenticating: boolean;
   login?: LoginFn;
+  logout?: () => void;
   username: string;
   password: string;
   token: string;
 }
 
 const initialState: AuthState = {
-  isAuthenticated: false,
+  isAuthenticated: !!localStorage.getItem("token"),
   isAuthenticating: false,
   authenticationError: null,
-  username: "",
+  username: localStorage.getItem("username") ?? "",
   password: "",
-  token: "",
+  token: localStorage.getItem("token") ?? "",
 };
 
 export const AuthContext = React.createContext<AuthState>(initialState);
@@ -33,8 +34,9 @@ interface AuthProviderProps {
   children: PropTypes.ReactNodeLike;
 }
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
   const [state, setState] = useState<AuthState>(initialState);
+  const history = useHistory();
   const {
     isAuthenticated,
     isAuthenticating,
@@ -48,10 +50,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = useCallback<LoginFn>(loginCallback, []);
 
+  const logout = useCallback(() => {
+    localStorage.setItem("token", "");
+    localStorage.setItem("username", "");
+    setState({
+      ...state,
+      isAuthenticated: false,
+      isAuthenticating: false,
+      token: "",
+      username: "",
+      password: "",
+    });
+    history.push("/login");
+  }, []);
+
   useEffect(authenticationEffect, [isAuthenticating]);
   const value = {
     isAuthenticated,
     login,
+    logout,
     isAuthenticating,
     authenticationError,
     token,
@@ -90,18 +107,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           ...state,
           isAuthenticating: true,
         });
-        const { username, password } = state;
-        await loginMockRequest(username, password);
+        const {username, password} = state;
+        const authToken = await loginRequest(username, password);
         if (canceled) {
           return;
         }
         log("authenticate succeeded");
         setState({
           ...state,
-          token,
+          token: authToken,
           isAuthenticated: true,
           isAuthenticating: false,
         });
+        localStorage.setItem("token", authToken);
+        localStorage.setItem("username", username);
       } catch (error) {
         if (canceled) {
           return;
