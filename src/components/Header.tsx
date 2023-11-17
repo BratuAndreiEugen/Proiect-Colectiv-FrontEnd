@@ -3,7 +3,7 @@ import {
   IonToolbar,
   IonText,
   IonButton,
-  IonIcon,
+  IonIcon, IonMenuButton, IonMenuToggle,
 } from "@ionic/react";
 import classes from "./Header.module.css";
 import { personCircleOutline, searchCircleOutline } from "ionicons/icons";
@@ -11,15 +11,12 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
 
 function Header() {
-  const { username } = useContext(AuthContext);
 
   return (
     <IonHeader class={classes.header}>
       <IonToolbar>
         <div className={classes.headerContent}>
-          <div className={classes.username}>
-            <IonText>{username}</IonText>
-          </div>
+          <IonMenuButton></IonMenuButton>
           <div>
             <IonIcon icon={personCircleOutline} className={classes.button} />
             <IonIcon icon={searchCircleOutline} className={classes.button} />

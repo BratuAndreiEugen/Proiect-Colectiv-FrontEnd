@@ -1,14 +1,16 @@
 import axios from 'axios';
 import { ResponseProps, baseUrl, config, withLogs } from '../utils';
-
-const authUrl = `http://${baseUrl}/api/auth/login`;
-
+import { RegisterFieldValues } from "../pages/Register";
 
 export const login = (username: string, password: string) => {
-  return withLogs(axios.post(authUrl, { username, password }, config), 'login');
+  return withLogs(axios.post(baseUrl + "/logIn", { email: username, password: password }, config), 'login');
 }
 
 export const mockLogin = (username: string, password: string) => {
   return withLogs(new Promise<ResponseProps<string>>((res, rej) => 
   res({data: "logged in"})), "login");
+}
+
+export const register = (data: RegisterFieldValues) => {
+  return withLogs(axios.post(baseUrl + "/register", data, config), 'register');
 }
