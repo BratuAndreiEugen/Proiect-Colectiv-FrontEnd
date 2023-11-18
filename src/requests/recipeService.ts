@@ -9,6 +9,13 @@ export const getAllRecipes = () => {
 
 export const addRecipe = (formData: FormData, jwt: string) => {
   return withLogs(axios.post(baseUrl + "/recipes", authConfig), "post recipe");
+}
+ 
+export const getRecipesByUser = (userId: number) => {
+  return withLogs(
+    axios.get(`${baseUrl}/recipes/user/${userId}`, config),
+    "getRecipesByUser"
+  );
 };
 
 export const recipesMock = [
