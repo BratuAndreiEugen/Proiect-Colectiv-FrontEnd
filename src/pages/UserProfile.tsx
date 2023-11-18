@@ -8,15 +8,22 @@ import { IonContent, IonPage } from "@ionic/react";
 import Drawer from "../components/Drawer";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { useParams } from "react-router";
 
 const UserProfile: React.FC = () => {
-  const { username, userId, bio } = useContext(AuthContext);
+  const params = useParams() as any;
+  const { userId: username } = params;
   const [recipes, setRecipes] = useState<any[]>([]);
+  const [bio, setBio] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const searchedUser = await getUserByUsername(username);
+        const userId = searchedUser.id;
+        setBio(searchedUser.bio);
+
         let recipesResponse = [];
         try {
           if (userId) recipesResponse = await getRecipesByUser(userId);

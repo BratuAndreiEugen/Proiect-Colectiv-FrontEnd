@@ -1,57 +1,79 @@
-  import {
+import {
   IonHeader,
   IonToolbar,
   IonText,
   IonButton,
-  IonIcon, IonMenuButton, IonMenuToggle, IonInput, InputChangeEventDetail,
+  IonIcon,
+  IonMenuButton,
+  IonMenuToggle,
+  IonInput,
+  InputChangeEventDetail,
 } from "@ionic/react";
-  import classes from "./Header.module.css";
-  import { personCircleOutline, searchCircleOutline } from "ionicons/icons";
-  import { FormEventHandler, useContext, useEffect, useState } from "react";
-  import { AuthContext } from "../context/AuthProvider";
-  import { Input } from "@mui/icons-material";
-  import { useHistory } from "react-router";
+import classes from "./Header.module.css";
+import { personCircleOutline, searchCircleOutline } from "ionicons/icons";
+import { FormEventHandler, useContext, useEffect, useState } from "react";
+import { AuthContext } from "../context/AuthProvider";
+import { Input } from "@mui/icons-material";
+import { useHistory } from "react-router";
+import { getUserByUsername } from "../requests/userService";
 
-  function Header() {
-    const [isOpenSearch, setIsOpenSearch] = useState(false);
-    const [searchValue, setSearchValue] = useState("");
-    const history = useHistory();
+function Header() {
+  const { username } = useContext(AuthContext);
+  const [isOpenSearch, setIsOpenSearch] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const history = useHistory();
 
-    useEffect(() => {
-      console.log(searchValue)
-    }, [searchValue]);
+  useEffect(() => {
+    console.log(searchValue);
+  }, [searchValue]);
 
-    const searchClick = () => {
-      if(!isOpenSearch){
-        setIsOpenSearch(!isOpenSearch)
-      }else{
-        history.push(`/user/${searchValue}`);
-      }
+  const searchClick = async () => {
+    if (!isOpenSearch) {
+      setIsOpenSearch(!isOpenSearch);
+    } else {
+      history.push(`/user/${searchValue}`);
     }
+  };
 
-    return (
-      <IonHeader class={classes.header}>
-        <IonToolbar>
-          <div className={classes.headerContent}>
-            <IonMenuButton></IonMenuButton>
-            <div className={classes.headerButtons}>
-              <IonInput
-                fill="outline"
-                placeholder="Search"
-                className={!isOpenSearch ? classes.invisible : ""}
-                value={searchValue}
-                onIonChange={(event: CustomEvent<InputChangeEventDetail>) => {
-                  setSearchValue(event.detail.value!);
-                }}
-              ></IonInput>
-              <IonIcon onClick={searchClick} icon={searchCircleOutline} className={classes.button} />
-              <IonIcon icon={personCircleOutline} className={classes.button} />
-            </div>
+  const redirectToUserProfile = () => {
+    if (username) {
+      history.push(`/user/${username}`);
+    } else {
+      console.error("User ID not available.");
+      console.error("User ID not available.");
+    }
+  };
+
+  return (
+    <IonHeader class={classes.header}>
+      <IonToolbar>
+        <div className={classes.headerContent}>
+          <IonMenuButton></IonMenuButton>
+          <div className={classes.headerButtons}>
+            <IonInput
+              fill="outline"
+              placeholder="Search"
+              className={!isOpenSearch ? classes.invisible : ""}
+              value={searchValue}
+              onIonChange={(event: CustomEvent<InputChangeEventDetail>) => {
+                setSearchValue(event.detail.value!);
+              }}
+            ></IonInput>
+            <IonIcon
+              onClick={searchClick}
+              icon={searchCircleOutline}
+              className={classes.button}
+            />
+            <IonIcon
+              icon={personCircleOutline}
+              className={classes.button}
+              onClick={redirectToUserProfile}
+            />
           </div>
-        </IonToolbar>
-      </IonHeader>
-    );
-  }
+        </div>
+      </IonToolbar>
+    </IonHeader>
+  );
+}
 
-
-  export default Header;
+export default Header;

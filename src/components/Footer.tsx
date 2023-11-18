@@ -1,6 +1,6 @@
 import { IonFooter, IonIcon } from "@ionic/react";
 import classes from "./Footer.module.css";
-import { addCircleOutline } from "ionicons/icons";
+import { addCircleOutline, homeOutline } from "ionicons/icons";
 import { useHistory } from "react-router";
 
 export default () => {
@@ -8,6 +8,13 @@ export default () => {
 
   return (
     <IonFooter className={classes.footer} translucent={true}>
+      <IonIcon
+        icon={homeOutline}
+        className={classes.addButton}
+        onClick={() => {
+          history.push("/home");
+        }}
+      />
       <IonIcon
         icon={addCircleOutline}
         className={classes.addButton}

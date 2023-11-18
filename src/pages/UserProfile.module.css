@@ -33,6 +33,10 @@
 
 .recipeList {
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   gap: 20px;
+  width: 100%;
+  margin: auto;
 }
