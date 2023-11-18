@@ -12,23 +12,21 @@ const RecipeFeed: React.FC = () => {
 
   return (
     <>
-      <Drawer contentId="main-content"/>
+      <Drawer contentId="main-content" />
       <IonPage id="main-content">
-        <Header/>
+        <Header />
         <IonContent fullscreen className={classes.content}>
           <div className={classes.recipes}>
             {recipes.map((recipe) => (
-              <RecipeCard recipe={recipe}/>
+              <RecipeCard recipe={recipe} key={recipe.id} />
             ))}
           </div>
         </IonContent>
         <IonFooter className={classes.footer} translucent={true}>
-          <IonIcon icon={addCircleOutline} className={classes.addButton}/>
+          <IonIcon icon={addCircleOutline} className={classes.addButton} />
         </IonFooter>
       </IonPage>
-
     </>
-
   );
 };
 
