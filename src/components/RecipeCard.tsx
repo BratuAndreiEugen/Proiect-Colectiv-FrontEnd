@@ -20,7 +20,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
       <IonImg src={recipe.thumbnailLink} />
       <IonCardHeader>
         <IonCardTitle>{recipe.title}</IonCardTitle>
-        <IonCardSubtitle>By {recipe.posterId}</IonCardSubtitle>
+        <IonCardSubtitle>By {recipe.posterUsername}</IonCardSubtitle>
       </IonCardHeader>
     </IonCard>
   );
