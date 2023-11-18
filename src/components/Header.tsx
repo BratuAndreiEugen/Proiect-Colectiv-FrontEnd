@@ -12,6 +12,7 @@ import { AuthContext } from "../context/AuthProvider";
 import {Link} from "react-router-dom";
 
 function Header() {
+  const {username} = useContext(AuthContext);
 
   return (
     <IonHeader class={classes.header}>
