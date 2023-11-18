@@ -1,29 +1,32 @@
 import React from "react";
 import {
-  IonCard,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonCardContent,
-  IonImg,
+    IonCard,
+    IonCardHeader,
+    IonCardSubtitle,
+    IonCardTitle,
+    IonCardContent,
+    IonImg,
 } from "@ionic/react";
 import classes from "./RecipeCard.module.css";
 import { RecipeShort } from "../model/recipe";
+import { Link } from 'react-router-dom';
 
 interface RecipeCardProps {
-  recipe: RecipeShort;
+    recipe: RecipeShort;
 }
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
-  return (
-    <IonCard className={classes.recipeCard}>
-      <IonImg src={recipe.thumbnailLink} />
-      <IonCardHeader>
-        <IonCardTitle>{recipe.title}</IonCardTitle>
-        <IonCardSubtitle>By {recipe.posterUsername}</IonCardSubtitle>
-      </IonCardHeader>
-    </IonCard>
-  );
+    return (
+        <Link to={`/post/${recipe.id}`} className={classes.recipeLink}>
+            <IonCard className={classes.recipeCard}>
+                <IonImg src={recipe.thumbnailLink} />
+                <IonCardHeader>
+                    <IonCardTitle>{recipe.title}</IonCardTitle>
+                    <IonCardSubtitle>By {recipe.posterUsername}</IonCardSubtitle>
+                </IonCardHeader>
+            </IonCard>
+        </Link>
+    );
 };
 
 export default RecipeCard;
