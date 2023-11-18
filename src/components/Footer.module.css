@@ -1,0 +1,27 @@
+.addButton {
+  font-size: 40px;
+  color: black;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  transform: scale(1.05);
+}
+
+.footer {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.footer ion-button {
+  transition: transform 0.2s ease-in-out;
+}
+
+.footer ion-button:hover {
+  transform: scale(1.05);
+}
