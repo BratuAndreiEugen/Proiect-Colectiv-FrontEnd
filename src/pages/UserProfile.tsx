@@ -7,6 +7,7 @@ import classes from "./UserProfile.module.css";
 import { IonContent, IonPage } from "@ionic/react";
 import Drawer from "../components/Drawer";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const UserProfile: React.FC = () => {
   const { username, userId, bio } = useContext(AuthContext);
@@ -49,7 +50,9 @@ const UserProfile: React.FC = () => {
             </div>
             <p className={classes.description}>Bio: {bio}</p>
             <h2>Recipes:</h2>
-            {recipes.length == 0 && <p className={classes.description}>No recipes found</p>}
+            {recipes.length == 0 && (
+              <p className={classes.description}>No recipes found</p>
+            )}
             <div className={classes.recipeList}>
               {recipes.map((recipe) => (
                 <RecipeCard key={recipe.id} recipe={recipe} />
@@ -57,6 +60,7 @@ const UserProfile: React.FC = () => {
             </div>
           </div>
         </IonContent>
+        <Footer />
       </IonPage>
     </>
   );
