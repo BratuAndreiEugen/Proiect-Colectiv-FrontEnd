@@ -19,6 +19,7 @@ export interface AuthState {
   password: string;
   token: string;
   userId: number | null;
+  bio: string;
 }
 
 const initialState: AuthState = {
@@ -27,6 +28,7 @@ const initialState: AuthState = {
   authenticationError: null,
   username: localStorage.getItem("username") ?? "",
   password: "",
+  bio: "",
   userId: null,
   token: localStorage.getItem("token") ?? "",
 };
@@ -48,19 +50,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     username,
     password,
     userId,
+    bio,
   } = state;
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       const response = await getUserByUsername(username);
-      const userId = response.data.id;
-      setState({ ...state, userId });
+      const userId = response.id;
+      const { bio } = response;
+      setState({ ...state, userId, bio });
     };
-
-    fetchUserInfo();
+    if (username.length > 0) {
+      fetchUserInfo();
+    }
   }, [username]);
-
-  console.log(state);
 
   const login = useCallback<LoginFn>(loginCallback, []);
 
@@ -89,6 +92,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     username,
     password,
     userId,
+    bio,
   };
 
   log("render");

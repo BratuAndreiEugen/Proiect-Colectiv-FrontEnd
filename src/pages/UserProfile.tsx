@@ -4,22 +4,23 @@ import { getRecipesByUser } from "../requests/recipeService";
 import RecipeCard from "../components/RecipeCard";
 import { AuthContext } from "../context/AuthProvider";
 import classes from "./UserProfile.module.css";
+import { IonContent, IonPage } from "@ionic/react";
+import Drawer from "../components/Drawer";
+import Header from "../components/Header";
 
 const UserProfile: React.FC = () => {
-  const { username, userId } = useContext(AuthContext);
-  const [user, setUser] = useState<any>(null);
+  const { username, userId, bio } = useContext(AuthContext);
   const [recipes, setRecipes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userResponse = await getUserByUsername(username);
-        setUser(userResponse.data);
-
         let recipesResponse = [];
-        if (userId) recipesResponse = await getRecipesByUser(userId);
-        setRecipes(recipesResponse.data);
+        try {
+          if (userId) recipesResponse = await getRecipesByUser(userId);
+          setRecipes(recipesResponse);
+        } catch (err) {}
 
         setLoading(false);
       } catch (error) {
@@ -36,21 +37,28 @@ const UserProfile: React.FC = () => {
   }
 
   return (
-    <div className={classes.userProfile}>
-      <div className={classes.header}>
-        <h1 className={classes.username}>User Profile: {user.username}</h1>
-        <button className={classes.followButton}>Follow</button>
-      </div>
-
-      <p className={classes.description}>Bio: {user.bio}</p>
-
-      <h2>Recipes:</h2>
-      <div className={classes.recipeList}>
-        {recipes.map((recipe) => (
-          <RecipeCard key={recipe.id} recipe={recipe} />
-        ))}
-      </div>
-    </div>
+    <>
+      <Drawer contentId="user-profile" />
+      <IonPage id="user-profile">
+        <Header />
+        <IonContent fullscreen>
+          <div className={classes.userProfile}>
+            <div className={classes.header}>
+              <h1 className={classes.username}>User Profile: {username}</h1>
+              <button className={classes.followButton}>Follow</button>
+            </div>
+            <p className={classes.description}>Bio: {bio}</p>
+            <h2>Recipes:</h2>
+            {recipes.length == 0 && <p className={classes.description}>No recipes found</p>}
+            <div className={classes.recipeList}>
+              {recipes.map((recipe) => (
+                <RecipeCard key={recipe.id} recipe={recipe} />
+              ))}
+            </div>
+          </div>
+        </IonContent>
+      </IonPage>
+    </>
   );
 };
 

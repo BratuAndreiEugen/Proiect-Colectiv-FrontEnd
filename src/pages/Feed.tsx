@@ -18,11 +18,11 @@ const RecipeFeed: React.FC = () => {
         <IonContent fullscreen className={classes.content}>
           <div className={classes.recipes}>
             {recipes.map((recipe) => (
-              <RecipeCard recipe={recipe} />
+              <RecipeCard recipe={recipe} key={recipe.id} />
             ))}
           </div>
         </IonContent>
-        <Footer />
+        <Footer/>
       </IonPage>
     </>
   );
