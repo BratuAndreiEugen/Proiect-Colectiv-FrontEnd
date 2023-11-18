@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import { getUserByUsername } from "../requests/userService";
 import { getRecipesByUser } from "../requests/recipeService";
 import RecipeCard from '../components/RecipeCard';
-
-interface RouteParams {
-    username: string;
-}
+import {AuthContext} from "../context/AuthProvider";
 
 const UserProfile: React.FC = () => {
-    const { username } = useParams<RouteParams>();
+    const { username } = useContext(AuthContext);
     const [user, setUser] = useState<any>(null);
     const [recipes, setRecipes] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
