@@ -33,10 +33,6 @@ const UserProfile: React.FC = () => {
     fetchData();
   }, [username]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
       <Drawer contentId="user-profile" />
