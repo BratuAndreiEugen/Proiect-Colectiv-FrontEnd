@@ -36,12 +36,12 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonRouterOutlet>
         <AuthProvider>
-          <Route path="/login" component={Login}/>
-          <Route path="/register" component={Register}/>
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
           <Route path="/post/:postId" component={PostDetail} />
-          <Route path="/" render={() => <Redirect to="/home"/>} exact/>
-          <PrivateRoute path="/home" component={FeedPage} exact/>
-          <PrivateRoute path="/add" component={AddRecipe} exact/>
+          <Route path="/" render={() => <Redirect to="/home" />} exact />
+          <PrivateRoute path="/home" component={FeedPage} exact />
+          <PrivateRoute path="/add" component={AddRecipe} exact />
           <PrivateRoute path="/user/:userId" component={UserProfile} />
         </AuthProvider>
       </IonRouterOutlet>
