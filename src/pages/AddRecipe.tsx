@@ -16,10 +16,14 @@ import Drawer from "../components/Drawer";
 import { useContext, useRef, useState } from "react";
 import Footer from "../components/Footer";
 import { AuthContext } from "../context/AuthProvider";
-import { addRecipe } from "../requests/recipeService";
+import {
+  addRecipe,
+  uploadFile,
+  uploadFileExtra,
+} from "../requests/recipeService";
 
 const AddRecipe: React.FC = () => {
-  const { token } = useContext(AuthContext);
+  const { userId } = useContext(AuthContext);
   const isPhone = useMediaQuery("(max-width:768px)");
   const thumbnailFileInput = useRef(null);
   const videoFileInput = useRef(null);
@@ -53,14 +57,45 @@ const AddRecipe: React.FC = () => {
   }
 
   const handlePost = async () => {
-    const formData = new FormData();
+    console.log(thumbnailString);
     if (!thumbnailFile) return;
-    formData.append("title", title);
-    formData.append("thumbnailLink", thumbnailFile);
-    if (videoFile) formData.append("videoLink", videoFile);
-    formData.append("description", description);
+    try {
+      const data = {
+        title,
+        caption: description,
+        posterId: userId,
+        videoLink: "",
+        thumbnailLink: "",
+      };
 
-    await addRecipe(formData, token);
+      let videoLink = "";
+      if (videoFile) {
+        const formData = new FormData();
+        formData.append("file", videoFile);
+        const response = await uploadFile(formData);
+        videoLink = response;
+      }
+
+      let thumbnailLink = "";
+      const formData = new FormData();
+      formData.append("file", thumbnailFile);
+      const response = await uploadFile(formData);
+      thumbnailLink = response;
+
+      data.thumbnailLink = thumbnailLink;
+      data.videoLink = videoLink;
+
+      const recipeId = await addRecipe(JSON.stringify(data));
+      if (imagesFiles)
+        for (let idx = 0; idx < imagesFiles?.length; ++idx) {
+          const imageFile = imagesFiles[idx];
+          const formData = new FormData();
+          formData.append("file", imageFile);
+          await uploadFileExtra(formData, recipeId);
+        }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
