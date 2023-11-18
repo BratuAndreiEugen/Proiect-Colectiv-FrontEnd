@@ -12,6 +12,15 @@
   align-items: center;
 }
 
+.headerButtons {
+  display: flex;
+  flex-direction: row;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
 .header ion-icon {
   cursor: pointer;
 }
