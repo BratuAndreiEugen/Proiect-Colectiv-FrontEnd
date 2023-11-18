@@ -3,7 +3,7 @@ import { ResponseProps, baseUrl, config, withLogs } from '../utils';
 import { RegisterFieldValues } from "../pages/Register";
 
 export const login = (username: string, password: string) => {
-  return withLogs(axios.post(baseUrl + "/logIn", { email: username, password: password }, config), 'login');
+  return withLogs(axios.post(baseUrl + "/logIn", { userName: username, password: password }, config), 'login');
 }
 
 export const mockLogin = (username: string, password: string) => {

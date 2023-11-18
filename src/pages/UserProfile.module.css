@@ -1,0 +1,38 @@
+.userProfile {
+  padding: 5px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.username {
+  font-size: 24px;
+  color: #333;
+}
+
+.followButton {
+  font-size: 16px;
+}
+
+.description {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.recipeTitle {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.recipeList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}

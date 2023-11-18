@@ -1,4 +1,5 @@
 export const baseUrl = "http://localhost:8080/v1";
+export const fileUrl = "http://localhost:5114/api/File/upload";
 
 export const getLogger: (tag: string) => (...args: any) => void =
   (tag) =>
@@ -29,6 +30,12 @@ export async function withLogs<T>(
 export const config = {
   headers: {
     "Content-Type": "application/json",
+  },
+};
+
+export const fileConfig = {
+  headers: {
+    "Content-Type": "multipart/form-data",
   },
 };
 

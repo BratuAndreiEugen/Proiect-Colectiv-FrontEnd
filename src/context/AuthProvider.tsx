@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { getLogger } from "../utils";
 import { login as loginRequest } from "../requests/authService";
 import { useHistory } from "react-router";
+import { getUserByUsername } from "../requests/userService";
 
 const log = getLogger("AuthProvider");
 
@@ -17,6 +18,8 @@ export interface AuthState {
   username: string;
   password: string;
   token: string;
+  userId: number | null;
+  bio: string;
 }
 
 const initialState: AuthState = {
@@ -25,6 +28,8 @@ const initialState: AuthState = {
   authenticationError: null,
   username: localStorage.getItem("username") ?? "",
   password: "",
+  bio: "",
+  userId: null,
   token: localStorage.getItem("token") ?? "",
 };
 
@@ -34,7 +39,7 @@ interface AuthProviderProps {
   children: PropTypes.ReactNodeLike;
 }
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, setState] = useState<AuthState>(initialState);
   const history = useHistory();
   const {
@@ -44,9 +49,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     token,
     username,
     password,
+    userId,
+    bio,
   } = state;
 
-  console.log(state);
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const response = await getUserByUsername(username);
+      const userId = response.id;
+      const { bio } = response;
+      setState({ ...state, userId, bio });
+    };
+    if (username.length > 0) {
+      fetchUserInfo();
+    }
+  }, [username]);
 
   const login = useCallback<LoginFn>(loginCallback, []);
 
@@ -74,6 +91,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     token,
     username,
     password,
+    userId,
+    bio,
   };
 
   log("render");
@@ -107,7 +126,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
           ...state,
           isAuthenticating: true,
         });
-        const {username, password} = state;
+        const { username, password } = state;
         const authToken = await loginRequest(username, password);
         if (canceled) {
           return;
