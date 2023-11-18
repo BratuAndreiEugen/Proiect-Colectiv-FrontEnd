@@ -1,5 +1,13 @@
 import { RegisterFieldValues } from "../pages/Register";
-import { baseUrl, config, ResponseProps, withLogs, authConfig } from "../utils";
+import {
+  baseUrl,
+  fileUrl,
+  config,
+  ResponseProps,
+  withLogs,
+  authConfig,
+  fileConfig,
+} from "../utils";
 import axios from "axios";
 import { RecipeList } from "../model/recipe";
 
@@ -7,14 +15,28 @@ export const getAllRecipes = () => {
   return withLogs(axios.get(baseUrl + "/recipes", config), "register");
 };
 
-export const addRecipe = (formData: FormData, jwt: string) => {
-  return withLogs(axios.post(baseUrl + "/recipes", authConfig), "post recipe");
-}
- 
+export const addRecipe = (data: any) => {
+  return withLogs(
+    axios.post(baseUrl + "/recipes/save", data, config),
+    "addRecipe"
+  );
+};
+
 export const getRecipesByUser = (userId: number) => {
   return withLogs(
     axios.get(`${baseUrl}/recipes/user/${userId}`, config),
     "getRecipesByUser"
+  );
+};
+
+export const uploadFile = (data: FormData) => {
+  return withLogs(axios.post(fileUrl, data, fileConfig), "uploadFile");
+};
+
+export const uploadFileExtra = (data: FormData, recipeId: number) => {
+  return withLogs(
+    axios.post(fileUrl + "/extra/" + recipeId.toString(), data, fileConfig),
+    "uploadFileExtra"
   );
 };
 
