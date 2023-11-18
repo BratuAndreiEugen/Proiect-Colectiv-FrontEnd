@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { IonHeader, IonToolbar, IonIcon } from '@ionic/react';
+import {IonHeader, IonToolbar, IonIcon, IonMenuButton} from '@ionic/react';
 import { personCircleOutline, searchCircleOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { getUserByUsername} from "../requests/userService";
@@ -33,15 +33,18 @@ const Header: React.FC = () => {
   };
 
   return (
-      <IonHeader>
+      <IonHeader  class={classes.header}>
         <IonToolbar>
-          <div>
+          <div className={classes.headerContent}>
+            <IonMenuButton></IonMenuButton>
+            <div>
             <IonIcon
                 icon={personCircleOutline}
                 className={classes.button}
                 onClick={redirectToUserProfile}
             />
             <IonIcon icon={searchCircleOutline} className={classes.button} />
+            </div>
           </div>
         </IonToolbar>
       </IonHeader>
