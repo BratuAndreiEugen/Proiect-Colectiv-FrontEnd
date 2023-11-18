@@ -1,59 +1,52 @@
-import React from 'react';
-import { IonContent, IonPage, IonIcon, IonButton, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonImg } from '@ionic/react';
-import { personAddOutline } from 'ionicons/icons';
-import { Recipe } from '../data/recipe';
-import { users, User } from '../data/user';
-import { useContext } from "react";
-import { useParams } from "react-router-dom";
-import { AuthContext } from "../context/AuthProvider";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getUserByUsername } from "../requests/userService";
+import { getRecipesByUser } from "../requests/recipeService";
 import RecipeCard from '../components/RecipeCard';
-import Header from '../components/Header';
-import classes from './UserProfile.module.css';
 
-interface UserProfileProps {
+interface RouteParams {
+    username: string;
 }
 
-const UserProfile: React.FC<UserProfileProps> = () => {
-    useParams<{ username: string }>();
+const UserProfile: React.FC = () => {
+    const { username } = useParams<RouteParams>();
+    const [user, setUser] = useState<any>(null);
+    const [recipes, setRecipes] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    const { isAuthenticated, username } = useContext(AuthContext);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userResponse = await getUserByUsername(username);
+                setUser(userResponse.data);
 
-    if (!isAuthenticated || !username) {
-        return null;
+                const recipesResponse = await getRecipesByUser(userResponse.data.id);
+                setRecipes(recipesResponse.data);
+
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [username]);
+
+    if (loading) {
+        return <div>Loading...</div>;
     }
-
-    const user: User | undefined = users.find((u) => u.username === username);
-
-    if (!user) {
-        console.log(`User with username ${username} not found.`);
-        return null;
-    }
-
-    const { description, recipes } = user;
-
 
     return (
-        <IonPage>
-            <Header />
-            <IonContent fullscreen>
-                <div className={classes.userProfile}>
-                    <div className={classes.header}>
-                        <h2 className={classes.username}>{username}</h2>
-                        <IonButton fill="outline" className={classes.followButton}>
-                            Follow
-                        </IonButton>
-                    </div>
-                    <p className={classes.description}>{description}</p>
-                    <h3 className={classes.recipeTitle}>Recipes</h3>
-                    <div className={classes.recipeList}>
-                        {recipes.map((recipe: Recipe) => (
-                            <RecipeCard key={recipe.id} recipe={recipe} />
-                        ))}
-                    </div>
-                </div>
+        <div>
+            <h1>User Profile: {user.username}</h1>
+            <p>Bio: {user.bio}</p>
 
-            </IonContent>
-        </IonPage>
+            <h2>Recipes:</h2>
+            {recipes.map((recipe) => (
+                <RecipeCard key={recipe.id} recipe={recipe} />
+            ))}
+        </div>
     );
 };
 

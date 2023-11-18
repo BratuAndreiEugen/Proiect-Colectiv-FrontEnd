@@ -1,4 +1,3 @@
-// Header.tsx
 import React, { useContext, useEffect, useState } from 'react';
 import { IonHeader, IonToolbar, IonIcon } from '@ionic/react';
 import { personCircleOutline, searchCircleOutline } from 'ionicons/icons';

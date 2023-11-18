@@ -38,7 +38,7 @@ const App: React.FC = () => (
           <Route path="/register" component={Register} />
           <Route path="/" render={() => <Redirect to="/home" />} exact />
           <PrivateRoute path="/home" component={FeedPage} exact />
-          <PrivateRoute path="/user/:username" component={UserProfile} />
+          <PrivateRoute path="/user/:userId" component={UserProfile} />
         </AuthProvider>
       </IonRouterOutlet>
     </IonReactRouter>
