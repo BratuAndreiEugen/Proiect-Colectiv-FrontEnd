@@ -4,6 +4,7 @@ import { getUserByUsername } from "../requests/userService";
 import { getRecipesByUser } from "../requests/recipeService";
 import RecipeCard from '../components/RecipeCard';
 import {AuthContext} from "../context/AuthProvider";
+import classes from './UserProfile.module.css';
 
 const UserProfile: React.FC = () => {
     const { username } = useContext(AuthContext);
@@ -35,14 +36,20 @@ const UserProfile: React.FC = () => {
     }
 
     return (
-        <div>
-            <h1>User Profile: {user.username}</h1>
-            <p>Bio: {user.bio}</p>
+        <div className={classes.userProfile}>]
+            <div className={classes.header}>
+                <h1 className={classes.username}>User Profile: {user.username}</h1>
+                <button className={classes.followButton}>Follow</button>
+            </div>
+
+            <p className={classes.description}>Bio: {user.bio}</p>
 
             <h2>Recipes:</h2>
-            {recipes.map((recipe) => (
-                <RecipeCard key={recipe.id} recipe={recipe} />
-            ))}
+            <div className={classes.recipeList}>
+                {recipes.map((recipe) => (
+                    <RecipeCard key={recipe.id} recipe={recipe} />
+                ))}
+            </div>
         </div>
     );
 };
