@@ -11,7 +11,7 @@ import Header from "../components/Header";
 import { imageOutline, imagesOutline, videocamOutline } from "ionicons/icons";
 import classes from "./AddRecipe.module.css";
 import useMediaQuery from "@mui/material/useMediaQuery";
-
+import { useHistory } from "react-router";
 import Drawer from "../components/Drawer";
 import { useContext, useRef, useState } from "react";
 import Footer from "../components/Footer";
@@ -28,6 +28,7 @@ const AddRecipe: React.FC = () => {
   const thumbnailFileInput = useRef(null);
   const videoFileInput = useRef(null);
   const imagesFilesInput = useRef(null);
+  const history = useHistory();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -93,6 +94,7 @@ const AddRecipe: React.FC = () => {
           formData.append("file", imageFile);
           await uploadFileExtra(formData, recipeId);
         }
+      history.push("/home");
     } catch (err) {
       console.log(err);
     }
