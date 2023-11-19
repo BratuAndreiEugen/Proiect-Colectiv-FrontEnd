@@ -31,7 +31,9 @@ function Header() {
     if (!isOpenSearch) {
       setIsOpenSearch(!isOpenSearch);
     } else {
-      history.push(`/user/${searchValue}`);
+      if(searchValue){
+        history.push(`/user/${searchValue}`);
+      }
     }
   };
 
