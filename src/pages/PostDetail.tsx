@@ -32,7 +32,6 @@ const PostDetail: React.FC = () => {
   const [recipeExtraPhotos, setRecipeExtraPhotos] = useState<ImageDTO[]>([]);
   const history = useHistory();
 
-
   useEffect(() => {
     const fetchRecipeDetail = async () => {
       try {

@@ -53,7 +53,8 @@ const UserProfile: React.FC = () => {
             </div>
             <p className={classes.description}>{bio}</p>
             <h2>Recipes:</h2>
-            {recipes.length == 0 && (
+            {loading ? (
+              <p>Loading...</p>) : recipes.length == 0 && (
               <p className={classes.description}>No recipes found</p>
             )}
             <div className={classes.recipeList}>

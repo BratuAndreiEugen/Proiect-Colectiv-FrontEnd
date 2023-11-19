@@ -19,7 +19,8 @@ const RecipeFeed: React.FC = () => {
         <Header />
         <IonContent fullscreen className={classes.content}>
           <div className={classes.recipes}>
-            {recipes.map((recipe) => (
+            {loading ? (
+              <p>Loading...</p> ) : recipes.map((recipe) => (
               <RecipeCard recipe={recipe} key={recipe.id} />
             ))}
           </div>
