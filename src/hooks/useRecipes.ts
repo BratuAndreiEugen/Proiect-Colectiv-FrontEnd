@@ -9,8 +9,6 @@ const useRecipes = () => {
   const [error, setError] = useState<string | null>(null);
   const { userId } = useContext(AuthContext);
 
-  console.log(userId);
-
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
@@ -25,7 +23,7 @@ const useRecipes = () => {
     };
 
     fetchRecipes();
-  }, []);
+  }, [userId]);
 
   return { recipes, loading, error };
 };

@@ -10,6 +10,8 @@ import Footer from "../components/Footer";
 const RecipeFeed: React.FC = () => {
   const { recipes, loading, error } = useRecipes();
 
+  console.log(recipes);
+
   return (
     <>
       <Drawer contentId="main-content" />
@@ -22,7 +24,7 @@ const RecipeFeed: React.FC = () => {
             ))}
           </div>
         </IonContent>
-        <Footer/>
+        <Footer />
       </IonPage>
     </>
   );
