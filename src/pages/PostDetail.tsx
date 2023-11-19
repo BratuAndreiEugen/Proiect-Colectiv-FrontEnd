@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { IonButton, IonContent, IonImg, IonPage } from "@ionic/react";
+import { IonButton, IonContent, IonImg, IonPage} from "@ionic/react";
 import Header from "../components/Header";
 import Drawer from "../components/Drawer";
 import classes from "./PostDetail.module.css";
 import Footer from "../components/Footer";
+import ImageGallery from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
 
 interface RecipeDTO {
   id: number;
@@ -19,10 +21,15 @@ interface RecipeDTO {
   posterUsername: string;
 }
 
+interface ImageDTO {
+  original : string;
+}
+
 const PostDetail: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
   const [recipeDetail, setRecipeDetail] = useState<RecipeDTO | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [recipeExtraPhotos, setRecipeExtraPhotos] = useState<ImageDTO[]>([]);
 
   useEffect(() => {
     const fetchRecipeDetail = async () => {
@@ -32,13 +39,28 @@ const PostDetail: React.FC = () => {
         );
         const recipeData: RecipeDTO = response.data;
         setRecipeDetail(recipeData);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching recipe detail:", error);
       }
     };
 
+    const fetchRecipeExtraPhotos = async () => {
+      try{
+        const response = await axios.get(`http://localhost:5114/api/File/photos/${postId}`);
+        const list = response.data;
+        const finalList = list.map((imageDTO: { uri: any; }) => ({
+          original : imageDTO.uri
+        }))
+        
+        setRecipeExtraPhotos(finalList);
+        setLoading(false);
+      }catch(error){
+        console.error("Error fetching recipe photos:", error);
+      }
+    }
+
     fetchRecipeDetail();
+    fetchRecipeExtraPhotos();
   }, [postId]);
 
   return (
@@ -61,10 +83,13 @@ const PostDetail: React.FC = () => {
                     Follow
                   </IonButton>
                 </div>
-                <IonImg
+                {/* <IonImg
                   src={recipeDetail.thumbnailLink}
                   alt={recipeDetail.title}
-                />
+                /> */}
+                <div>
+                  <ImageGallery showPlayButton = {false} infinite = {true} items = {recipeExtraPhotos} />
+                </div>
 
                 <video controls>
                   <source src={recipeDetail.videoLink} type="video/mp4" />
@@ -74,10 +99,10 @@ const PostDetail: React.FC = () => {
                 <p>
                   <strong>Description:</strong> {recipeDetail.caption}
                 </p>
-                <p>
+                {/* <p>
                   <strong>Nutritional Value:</strong>{" "}
                   {recipeDetail.averageRating}
-                </p>
+                </p> */}
 
                 <div className={classes.slider_container}>
                   <div>
