@@ -48,10 +48,10 @@ const UserProfile: React.FC = () => {
         <IonContent fullscreen className={classes.content}>
           <div className={classes.userProfile}>
             <div className={classes.header}>
-              <h1 className={classes.username}>User Profile: {username}</h1>
+              <h1 className={classes.username}>{username}</h1>
               <IonButton className={classes.followButton}>Follow</IonButton>
             </div>
-            <p className={classes.description}>Bio: {bio}</p>
+            <p className={classes.description}>{bio}</p>
             <h2>Recipes:</h2>
             {recipes.length == 0 && (
               <p className={classes.description}>No recipes found</p>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
 import { IonButton, IonContent, IonImg, IonPage} from "@ionic/react";
 import Header from "../components/Header";
@@ -30,6 +30,8 @@ const PostDetail: React.FC = () => {
   const [recipeDetail, setRecipeDetail] = useState<RecipeDTO | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [recipeExtraPhotos, setRecipeExtraPhotos] = useState<ImageDTO[]>([]);
+  const history = useHistory();
+
 
   useEffect(() => {
     const fetchRecipeDetail = async () => {
@@ -63,6 +65,14 @@ const PostDetail: React.FC = () => {
     fetchRecipeExtraPhotos();
   }, [postId]);
 
+  const redirectToUserPage = async () => {
+    try{
+      history.push(`/user/${recipeDetail?.posterUsername}`);
+    }catch{
+      console.log("Redirect FAILED in PostDetail.tsx");
+    }
+  }
+
   return (
     <>
       <Drawer contentId="detail" />
@@ -76,7 +86,7 @@ const PostDetail: React.FC = () => {
               <div>
                 <h2>{recipeDetail.title}</h2>
                 <div className={classes.user_info}>
-                  <p className={classes.user_name}>
+                  <p className={classes.user_name} onClick={redirectToUserPage}>
                     by {recipeDetail.posterUsername}
                   </p>
                   <IonButton className={classes.follow_button} size="small">
