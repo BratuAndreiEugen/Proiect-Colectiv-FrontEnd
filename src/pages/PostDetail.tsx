@@ -88,7 +88,7 @@ const PostDetail: React.FC = () => {
                   alt={recipeDetail.title}
                 /> */}
                 <div>
-                  <ImageGallery showPlayButton = {false} infinite = {true} items = {recipeExtraPhotos} />
+                  <ImageGallery showPlayButton = {false} infinite = {true} items = {recipeExtraPhotos}/>
                 </div>
 
                 <video controls>
