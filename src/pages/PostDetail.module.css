@@ -60,6 +60,15 @@ video {
   height: 50%;
 }
 
+.follow_button_clicked {
+  font-size: 12px;
+  margin-left: 10px;
+  text-transform: none;
+  height: 50%;
+  background-color: white;
+  color: white;
+}
+
 .content {
   width: calc(100% + 25px);
 }

@@ -16,6 +16,7 @@ const UserProfile: React.FC = () => {
   const [recipes, setRecipes] = useState<any[]>([]);
   const [bio, setBio] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isFollowButtonClicked, setIsFollowButtonClicked] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,6 +41,10 @@ const UserProfile: React.FC = () => {
     fetchData();
   }, [username]);
 
+  const handleFollowButtonClick = async () => {
+    setIsFollowButtonClicked(!isFollowButtonClicked);
+  }
+
   return (
     <>
       <Drawer contentId="user-profile" />
@@ -49,7 +54,10 @@ const UserProfile: React.FC = () => {
           <div className={classes.userProfile}>
             <div className={classes.header}>
               <h1 className={classes.username}>{username}</h1>
-              <IonButton className={classes.followButton}>Follow</IonButton>
+              {<IonButton className={isFollowButtonClicked ? classes.followButtonClicked : classes.followButton} size="small" onClick={handleFollowButtonClick}>
+                  {isFollowButtonClicked ? 'Unfollow' : 'Follow'}
+                  </IonButton>
+              }
             </div>
             <p className={classes.description}>{bio}</p>
             <h2>Recipes:</h2>

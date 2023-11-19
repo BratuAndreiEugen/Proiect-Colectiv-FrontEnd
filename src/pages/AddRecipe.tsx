@@ -23,7 +23,7 @@ import {
 } from "../requests/recipeService";
 
 const AddRecipe: React.FC = () => {
-  const { userId } = useContext(AuthContext);
+  const { userId, username } = useContext(AuthContext);
   const isPhone = useMediaQuery("(max-width:768px)");
   const thumbnailFileInput = useRef(null);
   const videoFileInput = useRef(null);
@@ -94,7 +94,7 @@ const AddRecipe: React.FC = () => {
           formData.append("file", imageFile);
           await uploadFileExtra(formData, recipeId);
         }
-      history.push("/home");
+      history.push(`/user/${username}`);
     } catch (err) {
       console.log(err);
     }
