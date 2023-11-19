@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { getAllRecipes, recipesMock } from "../requests/recipeService";
 import { RecipeList } from "../model/recipe";
 import { AuthContext } from "../context/AuthProvider";
+import { getUserByUsername } from "../requests/userService";
 
 const useRecipes = () => {
   const [recipes, setRecipes] = useState<RecipeList>([]);
@@ -13,7 +14,8 @@ const useRecipes = () => {
     const fetchRecipes = async () => {
       try {
         setLoading(true);
-        const recipesData = await getAllRecipes(userId!);
+        const userData = await getUserByUsername(localStorage.getItem("username")!);
+        const recipesData = await getAllRecipes(userData.id);
         setRecipes(recipesData);
       } catch (error) {
         setError("Error fetching recipes");

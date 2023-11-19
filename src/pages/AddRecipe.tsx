@@ -21,6 +21,7 @@ import {
   uploadFile,
   uploadFileExtra,
 } from "../requests/recipeService";
+import { getUserByUsername } from "../requests/userService";
 
 const AddRecipe: React.FC = () => {
   const { userId, username } = useContext(AuthContext);
@@ -60,11 +61,12 @@ const AddRecipe: React.FC = () => {
   const handlePost = async () => {
     console.log(thumbnailString);
     if (!thumbnailFile) return;
+    const loggeUser = await getUserByUsername(localStorage.getItem("username")!);
     try {
       const data = {
         title,
         caption: description,
-        posterId: userId,
+        posterId: localStorage.getItem("username") ? loggeUser.id : userId,
         videoLink: "",
         thumbnailLink: "",
       };

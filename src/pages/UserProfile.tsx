@@ -12,16 +12,17 @@ import { useParams } from "react-router";
 
 const UserProfile: React.FC = () => {
   const params = useParams() as any;
-  const { userId: username } = params;
+  const { userId: usernameFromSearch } = params;
   const [recipes, setRecipes] = useState<any[]>([]);
   const [bio, setBio] = useState("");
   const [loading, setLoading] = useState(true);
   const [isFollowButtonClicked, setIsFollowButtonClicked] = useState(false);
+  const { username } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const searchedUser = await getUserByUsername(username);
+        const searchedUser = await getUserByUsername(usernameFromSearch);
         const userId = searchedUser.id;
         setBio(searchedUser.bio);
 
@@ -39,7 +40,7 @@ const UserProfile: React.FC = () => {
     };
 
     fetchData();
-  }, [username]);
+  }, [usernameFromSearch]);
 
   const handleFollowButtonClick = async () => {
     setIsFollowButtonClicked(!isFollowButtonClicked);
@@ -53,8 +54,8 @@ const UserProfile: React.FC = () => {
         <IonContent fullscreen className={classes.content}>
           <div className={classes.userProfile}>
             <div className={classes.header}>
-              <h1 className={classes.username}>{username}</h1>
-              {<IonButton className={isFollowButtonClicked ? classes.followButtonClicked : classes.followButton} size="small" onClick={handleFollowButtonClick}>
+              <h1 className={classes.username}>{usernameFromSearch}</h1>
+              {usernameFromSearch != username &&<IonButton className={isFollowButtonClicked ? classes.followButtonClicked : classes.followButton} size="small" onClick={handleFollowButtonClick}>
                   {isFollowButtonClicked ? 'Unfollow' : 'Follow'}
                   </IonButton>
               }
