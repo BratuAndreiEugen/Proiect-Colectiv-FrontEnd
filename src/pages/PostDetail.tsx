@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { IonButton, IonContent, IonImg, IonPage } from "@ionic/react";
 import Header from "../components/Header";
-import "./PostDetail.css";
 import Drawer from "../components/Drawer";
+import classes from "./PostDetail.module.css";
+import Footer from "../components/Footer";
 
 interface RecipeDTO {
   id: number;
@@ -45,17 +46,19 @@ const PostDetail: React.FC = () => {
       <Drawer contentId="detail" />
       <IonPage id="detail">
         <Header />
-        <IonContent fullscreen>
-          <div className="container">
+        <IonContent fullscreen className={classes.content}>
+          <div className={classes.container}>
             {loading ? (
               <p>Loading...</p>
             ) : recipeDetail ? (
               <div>
                 <h2>{recipeDetail.title}</h2>
-                <div className="user-info">
-                  <p className="user-name">by {recipeDetail.posterUsername}</p>
-                  <IonButton className="follow-button" size="small">
-                    FOLLOW
+                <div className={classes.user_info}>
+                  <p className={classes.user_name}>
+                    by {recipeDetail.posterUsername}
+                  </p>
+                  <IonButton className={classes.follow_button} size="small">
+                    Follow
                   </IonButton>
                 </div>
                 <IonImg
@@ -76,35 +79,35 @@ const PostDetail: React.FC = () => {
                   {recipeDetail.averageRating}
                 </p>
 
-                <div className="slider-container">
+                <div className={classes.slider_container}>
                   <div>
-                    <span>Healthy </span>
+                    <div>Healthy</div>
                     <input
                       type="range"
                       min="1"
                       max="10"
                       defaultValue="5"
-                      className="slider-healthy"
+                      className={classes.slider_healthy}
                     />
                   </div>
                   <div>
-                    <span>Nutritive</span>
+                    <div>Nutritive</div>
                     <input
                       type="range"
                       min="1"
                       max="10"
                       defaultValue="5"
-                      className="slider-nutritive"
+                      className={classes.slider_nutritive}
                     />
                   </div>
                   <div>
-                    <span>Tasty </span>
+                    <div>Tasty</div>
                     <input
                       type="range"
                       min="1"
                       max="10"
                       defaultValue="5"
-                      className="slider-tasty"
+                      className={classes.slider_tasty}
                     />
                   </div>
                 </div>
@@ -114,6 +117,7 @@ const PostDetail: React.FC = () => {
             )}
           </div>
         </IonContent>
+        <Footer />
       </IonPage>
     </>
   );

@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getAllRecipes, recipesMock } from "../requests/recipeService";
 import { RecipeList } from "../model/recipe";
+import { AuthContext } from "../context/AuthProvider";
 
 const useRecipes = () => {
   const [recipes, setRecipes] = useState<RecipeList>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { userId } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
         setLoading(true);
-        const recipesData = await getAllRecipes();
+        const recipesData = await getAllRecipes(userId!);
         setRecipes(recipesData);
       } catch (error) {
         setError("Error fetching recipes");
@@ -21,7 +23,7 @@ const useRecipes = () => {
     };
 
     fetchRecipes();
-  }, []);
+  }, [userId]);
 
   return { recipes, loading, error };
 };

@@ -28,25 +28,29 @@ import FeedPage from "./pages/Feed";
 import AddRecipe from "./pages/AddRecipe";
 import PostDetail from "./pages/PostDetail";
 import UserProfile from "./pages/UserProfile";
+import theme from "./theme/muiTheme";
+import { ThemeProvider } from "@emotion/react";
 
 setupIonicReact();
 
 const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <AuthProvider>
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/post/:postId" component={PostDetail} />
-          <Route path="/" render={() => <Redirect to="/home" />} exact />
-          <PrivateRoute path="/home" component={FeedPage} exact />
-          <PrivateRoute path="/add" component={AddRecipe} exact />
-          <PrivateRoute path="/user/:userId" component={UserProfile} />
-        </AuthProvider>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
+  <ThemeProvider theme={theme}>
+    <IonApp>
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <AuthProvider>
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <Route path="/post/:postId" component={PostDetail} />
+            <Route path="/" render={() => <Redirect to="/home" />} exact />
+            <PrivateRoute path="/home" component={FeedPage} exact />
+            <PrivateRoute path="/add" component={AddRecipe} exact />
+            <PrivateRoute path="/user/:userId" component={UserProfile} />
+          </AuthProvider>
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </IonApp>
+  </ThemeProvider>
 );
 
 export default App;
