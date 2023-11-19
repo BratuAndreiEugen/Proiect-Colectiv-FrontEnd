@@ -147,7 +147,7 @@ const PostDetail: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <p>No data available</p>
+              <p>Loading...</p>
             )}
           </div>
         </IonContent>
