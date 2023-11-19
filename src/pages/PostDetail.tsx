@@ -81,16 +81,34 @@ const PostDetail: React.FC = () => {
 
                 <div className={classes.slider_container}>
                   <div>
-                    <div>Healthy </div>
-                    <input type="range" min="1" max="10" defaultValue="5" />
+                    <div>Healthy</div>
+                    <input
+                      type="range"
+                      min="1"
+                      max="10"
+                      defaultValue="5"
+                      className={classes.slider_healthy}
+                    />
                   </div>
                   <div>
                     <div>Nutritive</div>
-                    <input type="range" min="1" max="10" defaultValue="5" />
+                    <input
+                      type="range"
+                      min="1"
+                      max="10"
+                      defaultValue="5"
+                      className={classes.slider_nutritive}
+                    />
                   </div>
                   <div>
-                    <div>Tasty </div>
-                    <input type="range" min="1" max="10" defaultValue="5" />
+                    <div>Tasty</div>
+                    <input
+                      type="range"
+                      min="1"
+                      max="10"
+                      defaultValue="5"
+                      className={classes.slider_tasty}
+                    />
                   </div>
                 </div>
               </div>

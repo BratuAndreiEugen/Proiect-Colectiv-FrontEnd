@@ -23,7 +23,18 @@ video {
   width: 200px;
   margin-bottom: 10px;
   display: inline;
+}
+
+.slider_healthy {
+  accent-color: #68c468;
+}
+
+.slider_tasty {
   accent-color: #fb8846;
+}
+
+.slider_nutritive {
+  accent-color: #dad74e;
 }
 
 .emoji {
