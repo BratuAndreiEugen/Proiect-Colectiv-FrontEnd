@@ -11,8 +11,11 @@ import {
 import axios from "axios";
 import { RecipeList } from "../model/recipe";
 
-export const getAllRecipes = () => {
-  return withLogs(axios.get(baseUrl + "/recipes", config), "register");
+export const getAllRecipes = (userId: number) => {
+  return withLogs(
+    axios.get(baseUrl + "/recipes/user/not/" + userId.toString(), config),
+    "register"
+  );
 };
 
 export const addRecipe = (data: any) => {
