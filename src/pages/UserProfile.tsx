@@ -4,7 +4,7 @@ import { getRecipesByUser } from "../requests/recipeService";
 import RecipeCard from "../components/RecipeCard";
 import { AuthContext } from "../context/AuthProvider";
 import classes from "./UserProfile.module.css";
-import { IonContent, IonPage } from "@ionic/react";
+import { IonButton, IonContent, IonPage } from "@ionic/react";
 import Drawer from "../components/Drawer";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -45,11 +45,11 @@ const UserProfile: React.FC = () => {
       <Drawer contentId="user-profile" />
       <IonPage id="user-profile">
         <Header />
-        <IonContent fullscreen>
+        <IonContent fullscreen className={classes.content}>
           <div className={classes.userProfile}>
             <div className={classes.header}>
               <h1 className={classes.username}>User Profile: {username}</h1>
-              <button className={classes.followButton}>Follow</button>
+              <IonButton className={classes.followButton}>Follow</IonButton>
             </div>
             <p className={classes.description}>Bio: {bio}</p>
             <h2>Recipes:</h2>
