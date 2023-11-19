@@ -34,6 +34,7 @@ function Header() {
       if(searchValue){
         history.push(`/user/${searchValue}`);
       }
+      setIsOpenSearch(!isOpenSearch);
     }
   };
 

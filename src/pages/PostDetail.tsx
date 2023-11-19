@@ -31,6 +31,7 @@ const PostDetail: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [recipeExtraPhotos, setRecipeExtraPhotos] = useState<ImageDTO[]>([]);
   const history = useHistory();
+  const [isFollowButtonClicked, setIsFollowButtonClicked] = useState(false);
 
   useEffect(() => {
     const fetchRecipeDetail = async () => {
@@ -72,6 +73,10 @@ const PostDetail: React.FC = () => {
     }
   }
 
+  const handleFollowButtonClick = async () => {
+    setIsFollowButtonClicked(!isFollowButtonClicked);
+  }
+
   return (
     <>
       <Drawer contentId="detail" />
@@ -88,8 +93,8 @@ const PostDetail: React.FC = () => {
                   <p className={classes.user_name} onClick={redirectToUserPage}>
                     by {recipeDetail.posterUsername}
                   </p>
-                  <IonButton className={classes.follow_button} size="small">
-                    Follow
+                  <IonButton className={isFollowButtonClicked ? classes.follow_button_clicked : classes.follow_button} size="small" onClick={handleFollowButtonClick}>
+                  {isFollowButtonClicked ? 'Unfollow' : 'Follow'}
                   </IonButton>
                 </div>
                 {/* <IonImg
@@ -147,7 +152,7 @@ const PostDetail: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <p>No data available</p>
+              <p>Loading...</p>
             )}
           </div>
         </IonContent>
