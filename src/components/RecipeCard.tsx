@@ -17,6 +17,11 @@ interface RecipeCardProps {
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   const cardRef = useRef(null);
+  const tempDiv = document.createElement('div');
+
+  tempDiv.innerHTML = recipe.caption ?? '';
+
+  const textContent = tempDiv.textContent || tempDiv.innerText;
 
   return (
     <Link to={`/post/${recipe.id}`} className={classes.recipeLink}>
@@ -30,7 +35,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
             <IonCardSubtitle>By {recipe.posterUsername}</IonCardSubtitle>
           </div>
           <div className={classes.descriptionContainer}>
-            <div className={classes.description} dangerouslySetInnerHTML={{ __html: recipe.caption?.substring(0,90)+"..." }}></div>
+            <div className={classes.description} dangerouslySetInnerHTML={{ __html: textContent.substring(0,90)+"..." }} style={{ wordBreak: "break-word"}}></div>
           </div>
         </IonCardHeader>
       </IonCard>
