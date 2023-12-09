@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { getAllRecipes, recipesMock } from "../requests/recipeService";
+import { getAllRecipes } from "../requests/recipeService";
 import { RecipeList } from "../model/recipe";
 import { AuthContext } from "../context/AuthProvider";
 

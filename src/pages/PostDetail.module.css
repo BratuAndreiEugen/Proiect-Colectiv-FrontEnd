@@ -3,8 +3,9 @@
   margin: auto;
   margin-bottom: 20px;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 1px solid #ccc2;
+  border-radius: 7px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 video {
@@ -58,6 +59,7 @@ video {
   margin-left: 10px;
   text-transform: none;
   height: 50%;
+  color: white;
 }
 
 .content {

@@ -40,6 +40,7 @@ const PostDetail: React.FC = () => {
         );
         const recipeData: RecipeDTO = response.data;
         setRecipeDetail(recipeData);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching recipe detail:", error);
       }
@@ -106,7 +107,7 @@ const PostDetail: React.FC = () => {
                 </video>
 
                 <p>
-                  <strong>Description:</strong> {recipeDetail.caption}
+                  <div dangerouslySetInnerHTML={{ __html: recipeDetail.caption }}></div>
                 </p>
                 {/* <p>
                   <strong>Nutritional Value:</strong>{" "}

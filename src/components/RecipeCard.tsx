@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   IonCard,
   IonCardHeader,
@@ -16,13 +16,22 @@ interface RecipeCardProps {
 }
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
+  const cardRef = useRef(null);
+
   return (
     <Link to={`/post/${recipe.id}`} className={classes.recipeLink}>
-      <IonCard className={classes.recipeCard}>
+      <IonCard
+        className={classes.recipeCard}
+      >
         <IonImg src={recipe.thumbnailLink} />
         <IonCardHeader className={classes.header}>
-          <IonCardTitle className={classes.title}>{recipe.title}</IonCardTitle>
-          <IonCardSubtitle>By {recipe.posterUsername}</IonCardSubtitle>
+          <div className={classes.titleContainer}>
+            <IonCardTitle className={classes.title}>{recipe.title}</IonCardTitle>
+            <IonCardSubtitle>By {recipe.posterUsername}</IonCardSubtitle>
+          </div>
+          <div className={classes.descriptionContainer}>
+            <p className={classes.description}>{recipe.caption?.substring(0,90)+"..."}</p>
+          </div>
         </IonCardHeader>
       </IonCard>
     </Link>
