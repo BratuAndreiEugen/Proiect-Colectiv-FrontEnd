@@ -30,7 +30,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
             <IonCardSubtitle>By {recipe.posterUsername}</IonCardSubtitle>
           </div>
           <div className={classes.descriptionContainer}>
-            <p className={classes.description}>{recipe.caption?.substring(0,90)+"..."}</p>
+            <div className={classes.description} dangerouslySetInnerHTML={{ __html: recipe.caption?.substring(0,90)+"..." }}></div>
           </div>
         </IonCardHeader>
       </IonCard>
