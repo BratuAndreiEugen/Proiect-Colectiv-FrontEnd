@@ -15,6 +15,7 @@ export type RecipeShort = {
   posterId: string;
   thumbnailLink: string;
   posterUsername: string;
+  caption?: string;
 }
 
 export type RecipeList = RecipeShort[];

@@ -21,6 +21,8 @@ import {
   uploadFile,
   uploadFileExtra,
 } from "../requests/recipeService";
+import ReactQuill from "react-quill";
+import TextEditor from "../components/TextEditor";
 
 const AddRecipe: React.FC = () => {
   const { userId } = useContext(AuthContext);
@@ -69,6 +71,7 @@ const AddRecipe: React.FC = () => {
         thumbnailLink: "",
       };
 
+      console.log(data);
       let videoLink = "";
       if (videoFile) {
         const formData = new FormData();
@@ -188,25 +191,16 @@ const AddRecipe: React.FC = () => {
                 {imagesFiles ? imagesString : "Upload"}
               </IonButton>
             </div>
-            <div className={classes.row} style={{ marginTop: "5px" }}>
+            <div className={classes.column} style={{ marginTop: "5px" }}>
               <IonLabel>Description:</IonLabel>
-              <IonTextarea
-                color="primary"
-                fill="outline"
-                shape="round"
-                placeholder="Enter description"
-                rows={2}
-                value={description}
-                className={classes.description}
-                onIonChange={(e) => setDescription(e.detail.value!)}
-              />
+              <TextEditor onChange={(e) => setDescription(e)}/>
             </div>
             <IonButton
               expand="full"
               className={classes.button}
               shape="round"
               onClick={handlePost}
-              style={{ marginTop: "0.5rem" }}
+              style={{ marginTop: "1rem" }}
             >
               Post
             </IonButton>

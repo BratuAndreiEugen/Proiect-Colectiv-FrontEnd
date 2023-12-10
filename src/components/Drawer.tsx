@@ -29,7 +29,7 @@ const Drawer = ({ contentId }: DrawerProps) => {
           </div>
         </IonContent>
         <IonFooter>
-          <IonButton onClick={logout} expand="block" style={{padding: "5px"}}>Logout</IonButton>
+          <IonButton onClick={logout} expand="block" style={{padding: "5px", color: "white"}}>Logout</IonButton>
         </IonFooter>
       </IonMenu>
     </>

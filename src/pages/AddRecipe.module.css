@@ -1,19 +1,25 @@
 .form {
-  width: 30%;
-  margin: auto;
+  width: 50%;
   display: flex;
   flex-direction: column;
   background-color: rgba(255, 255, 255, 0.568);
   border-radius: 10px;
   padding: 20px;
-  margin-top: 60px;
+  margin: 60px auto auto;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
   gap: 15px;
 }
 
 .row {
   display: flex;
-  align-items: center;
+  align-content: flex-start;
+  gap: 20px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 20px;
 }
 
@@ -21,6 +27,7 @@
   margin-left: 0;
   margin-right: 0;
   text-transform: none;
+  color: white;
 }
 
 .form ion-input {
@@ -29,14 +36,14 @@
 
 @media (max-width: 1300px) {
   .form {
-    width: 40%;
+    width: 50%;
     margin-top: 100px;
   }
 }
 
 @media (max-width: 1000px) {
   .form {
-    width: 50%;
+    width: 70%;
     margin-top: 100px;
   }
 }
