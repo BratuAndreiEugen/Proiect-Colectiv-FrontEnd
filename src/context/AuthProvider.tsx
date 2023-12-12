@@ -29,7 +29,7 @@ const initialState: AuthState = {
   username: localStorage.getItem("username") ?? "",
   password: "",
   bio: "",
-  userId: null,
+  userId: parseInt(localStorage.getItem("id") ?? ""),
   token: localStorage.getItem("token") ?? "",
 };
 
@@ -70,6 +70,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = useCallback(() => {
     localStorage.setItem("token", "");
     localStorage.setItem("username", "");
+    localStorage.setItem("id", "");
     setState({
       ...state,
       isAuthenticated: false,
@@ -126,7 +127,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           ...state,
           isAuthenticating: true,
         });
-        const { username, password } = state;
+        const { username, password, userId } = state;
         const authToken = await loginRequest(username, password);
         if (canceled) {
           return;
@@ -140,6 +141,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
         localStorage.setItem("token", authToken);
         localStorage.setItem("username", username);
+        if(userId)
+          localStorage.setItem("id", userId.toString());
       } catch (error) {
         if (canceled) {
           return;

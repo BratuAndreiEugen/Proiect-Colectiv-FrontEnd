@@ -70,6 +70,13 @@ video {
   padding-right: 7px;
 }
 
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
 @media (max-width: 768px) {
   .container {
     width: 80%;

@@ -10,6 +10,7 @@ import {
 } from "../utils";
 import axios from "axios";
 import { RecipeList } from "../model/recipe";
+import { Rating, RatingRequest } from "../model/Rating";
 
 export const getAllRecipes = (userId: number) => {
   return withLogs(
@@ -22,6 +23,13 @@ export const addRecipe = (data: any) => {
   return withLogs(
     axios.post(baseUrl + "/recipes/save", data, config),
     "addRecipe"
+  );
+};
+
+export const updateRating = (data: RatingRequest, recipeId: number) => {
+  return withLogs(
+    axios.post(baseUrl + `/recipes/${recipeId}/rating`, data, config),
+    "updateRating"
   );
 };
 
