@@ -8,6 +8,11 @@ import classes from "./PostDetail.module.css";
 import Footer from "../components/Footer";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
+import RatingDisplay from "../components/RatingDisplay";
+import Tooltip from '@mui/material/Tooltip';
+import ShortRatingDisplay from "../components/ShortRatingDisplay";
+import { addRecipe, updateRating } from "../requests/recipeService";
+import { Rating, RatingRequest } from "../model/Rating";
 
 interface RecipeDTO {
   id: number;
@@ -31,6 +36,9 @@ const PostDetail: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [recipeExtraPhotos, setRecipeExtraPhotos] = useState<ImageDTO[]>([]);
   const history = useHistory();
+  const [healthy, setHealthy] = useState(0);
+  const [nutritive, setNutritive] = useState(0);
+  const [tasty, setTasty] = useState(0);
 
   useEffect(() => {
     const fetchRecipeDetail = async () => {
@@ -73,6 +81,44 @@ const PostDetail: React.FC = () => {
     }
   }
 
+  const postNewRating = async () => {
+    try{
+      const userId = localStorage.getItem("id");
+
+      if(recipeDetail?.id && userId){
+        const data: RatingRequest = {
+          healthy: healthy,
+          nutritive: nutritive,
+          tasty: tasty,
+          userId: parseInt(userId),
+        }
+
+        await updateRating(data, recipeDetail?.id);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  //limit calls
+  const [debouncedHealthy, setDebouncedHealthy] = useState(0);
+  const [debouncedNutritive, setDebouncedNutritive] = useState(0);
+  const [debouncedTasty, setDebouncedTasty] = useState(0);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebouncedHealthy(healthy);
+      setDebouncedNutritive(nutritive);
+      setDebouncedTasty(tasty);
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [healthy, nutritive, tasty]);
+
+  useEffect(() => {
+    postNewRating();
+  }, [debouncedHealthy, debouncedNutritive, debouncedTasty]);
+
   return (
     <>
       <Drawer contentId="detail" />
@@ -83,7 +129,7 @@ const PostDetail: React.FC = () => {
             {loading ? (
               <p>Loading...</p>
             ) : recipeDetail ? (
-              <div>
+              <div style={{ position: "relative" }}>
                 <h2>{recipeDetail.title}</h2>
                 <div className={classes.user_info}>
                   <p className={classes.user_name} onClick={redirectToUserPage}>
@@ -93,6 +139,7 @@ const PostDetail: React.FC = () => {
                     Follow
                   </IonButton>
                 </div>
+                <ShortRatingDisplay rating={recipeDetail.averageRating}/>
                 {/* <IonImg
                   src={recipeDetail.thumbnailLink}
                   alt={recipeDetail.title}
@@ -117,33 +164,45 @@ const PostDetail: React.FC = () => {
                 <div className={classes.slider_container}>
                   <div>
                     <div>Healthy</div>
-                    <input
-                      type="range"
-                      min="1"
-                      max="10"
-                      defaultValue="5"
-                      className={classes.slider_healthy}
-                    />
+                    <div className={classes.flexRow}>
+                      <input
+                        type="range"
+                        min="1"
+                        max="100"
+                        value={healthy}
+                        onChange={(e) => setHealthy(parseInt(e.target.value))}
+                        className={classes.slider_healthy}
+                      />
+                      <RatingDisplay rating={healthy} type="healthy"/>
+                    </div>
                   </div>
                   <div>
                     <div>Nutritive</div>
-                    <input
-                      type="range"
-                      min="1"
-                      max="10"
-                      defaultValue="5"
-                      className={classes.slider_nutritive}
-                    />
+                    <div className={classes.flexRow}>
+                      <input
+                        type="range"
+                        min="1"
+                        max="100"
+                        value={nutritive}
+                        onChange={(e) => setNutritive(parseInt(e.target.value))}
+                        className={classes.slider_nutritive}
+                      />
+                      <RatingDisplay rating={nutritive} type="nutritive"/>
+                    </div>
                   </div>
                   <div>
                     <div>Tasty</div>
-                    <input
-                      type="range"
-                      min="1"
-                      max="10"
-                      defaultValue="5"
-                      className={classes.slider_tasty}
-                    />
+                    <div className={classes.flexRow}>
+                      <input
+                        type="range"
+                        min="1"
+                        max="100"
+                        value={tasty}
+                        onChange={(e) => setTasty(parseInt(e.target.value))}
+                        className={classes.slider_tasty}
+                      />
+                      <RatingDisplay rating={tasty} type="tasty"/>
+                    </div>
                   </div>
                 </div>
               </div>

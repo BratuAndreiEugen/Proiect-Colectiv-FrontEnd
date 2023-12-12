@@ -10,6 +10,7 @@ import {
 import classes from "./RecipeCard.module.css";
 import { RecipeShort } from "../model/recipe";
 import { Link } from "react-router-dom";
+import RatingDisplay from "./RatingDisplay";
 
 interface RecipeCardProps {
   recipe: RecipeShort;
@@ -33,9 +34,13 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
           <div className={classes.titleContainer}>
             <IonCardTitle className={classes.title}>{recipe.title}</IonCardTitle>
             <IonCardSubtitle>By {recipe.posterUsername}</IonCardSubtitle>
+
           </div>
-          <div className={classes.descriptionContainer}>
+          <div className={classes.descriptionContainer} style={{ position: "relative" }}>
             <p className={classes.description}>{textContent.substring(0,90)+"..." }</p>
+            <div style={{ position: "absolute", top: "-30px"}}>
+              <RatingDisplay rating={recipe.averageRating ?? 0} type="tasty"/>
+            </div>
           </div>
         </IonCardHeader>
       </IonCard>
