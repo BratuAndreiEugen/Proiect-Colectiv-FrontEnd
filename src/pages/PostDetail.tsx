@@ -13,6 +13,8 @@ import Tooltip from '@mui/material/Tooltip';
 import ShortRatingDisplay from "../components/ShortRatingDisplay";
 import { addRecipe, updateRating } from "../requests/recipeService";
 import { Rating, RatingRequest } from "../model/Rating";
+import { Follow } from "../model/Follow";
+import { followWithUsername, getFollowersUserName } from "../requests/userService";
 
 interface RecipeDTO {
   id: number;
@@ -39,6 +41,7 @@ const PostDetail: React.FC = () => {
   const [healthy, setHealthy] = useState(0);
   const [nutritive, setNutritive] = useState(0);
   const [tasty, setTasty] = useState(0);
+  const [following, setFollowing] = useState(false);
 
   useEffect(() => {
     const fetchRecipeDetail = async () => {
@@ -48,6 +51,12 @@ const PostDetail: React.FC = () => {
         );
         const recipeData: RecipeDTO = response.data;
         setRecipeDetail(recipeData);
+        const followers: Follow[] = await getFollowersUserName(recipeData.posterUsername);
+        const loggedUserId = localStorage.getItem("id");
+        if(loggedUserId) {
+          setFollowing(followers.some(follow => follow.foloweeId === parseInt(loggedUserId)));
+        }
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching recipe detail:", error);
@@ -100,6 +109,19 @@ const PostDetail: React.FC = () => {
     }
   }
 
+  const follow = async () => {
+    try{
+      const loggedUserId = localStorage.getItem("id");
+      if(loggedUserId && recipeDetail?.posterUsername){
+        await followWithUsername({ userName: recipeDetail?.posterUsername, followeeId: parseInt(loggedUserId) })
+        setFollowing(!following);
+      }
+    } catch (error) {
+      console.error("Error sending follow request:", error);
+      setLoading(false);
+    }
+  }
+
   //limit calls
   const [debouncedHealthy, setDebouncedHealthy] = useState(0);
   const [debouncedNutritive, setDebouncedNutritive] = useState(0);
@@ -110,7 +132,7 @@ const PostDetail: React.FC = () => {
       setDebouncedHealthy(healthy);
       setDebouncedNutritive(nutritive);
       setDebouncedTasty(tasty);
-    }, 500);
+    }, 1000);
 
     return () => clearTimeout(timeoutId);
   }, [healthy, nutritive, tasty]);
@@ -135,11 +157,9 @@ const PostDetail: React.FC = () => {
                   <p className={classes.user_name} onClick={redirectToUserPage}>
                     by {recipeDetail.posterUsername}
                   </p>
-                  <IonButton className={classes.follow_button} size="small">
-                    Follow
-                  </IonButton>
+                  <IonButton className={classes.follow_button} size="small" onClick={follow}>{following ? 'Unfollow' : 'Follow'}</IonButton>
+                  <ShortRatingDisplay rating={recipeDetail.averageRating}/>
                 </div>
-                <ShortRatingDisplay rating={recipeDetail.averageRating}/>
                 {/* <IonImg
                   src={recipeDetail.thumbnailLink}
                   alt={recipeDetail.title}
