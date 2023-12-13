@@ -48,6 +48,7 @@ video {
   width: 20%;
   align-items: center;
   margin-bottom: 10px;
+  gap: 7px;
 }
 
 .user_name {
