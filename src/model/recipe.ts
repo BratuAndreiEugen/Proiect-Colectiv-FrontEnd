@@ -16,7 +16,9 @@ export type RecipeShort = {
   thumbnailLink: string;
   posterUsername: string;
   caption?: string;
-  averageRating?: number;
+  healthAverageRating: number;
+  nutritionAverageRating: number;
+  tasteAverageRating: number;
 }
 
 export type RecipeList = RecipeShort[];
