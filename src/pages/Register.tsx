@@ -11,12 +11,13 @@ import PersonIcon from "@mui/icons-material/Person";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { FieldValues, Form, FormProvider, FormSubmitHandler, SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { register as registerRequest } from "../requests/authService";
-import { IonTextarea } from "@ionic/react";
+import { IonImg } from "@ionic/react";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { useHistory } from "react-router";
+import classes from "./Register.module.css"
 
 export interface RegisterFieldValues {
   username: string;
@@ -41,7 +42,7 @@ export default function Register() {
   }, [isAuthenticated]);
 
   const onSubmit = async (data: RegisterFieldValues) => {
-    console.log(data)
+    console.log(data);
     try {
       await registerRequest(data);
       if (login) {
@@ -51,22 +52,20 @@ export default function Register() {
     } catch (error) {
       console.error("Error during registration or login:", error);
     }
-  }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
-          marginTop: isPhone ? 16 : 13,
+          marginTop: isPhone ? 4 : 4,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <PersonIcon />
-        </Avatar>
+        <IonImg src="/bucatar.jpeg" className={classes.bucatar} />
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
@@ -80,7 +79,7 @@ export default function Register() {
                   id="username"
                   label="Username"
                   autoComplete="family-name"
-                  {...register('username')}
+                  {...register("username")}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -90,7 +89,7 @@ export default function Register() {
                   id="email"
                   label="Email Address"
                   autoComplete="email"
-                  {...register('email')}
+                  {...register("email")}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -101,7 +100,7 @@ export default function Register() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  {...register('passwordHash')}
+                  {...register("passwordHash")}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -112,7 +111,7 @@ export default function Register() {
                   type="password"
                   id="confirmpassword"
                   autoComplete="new-password"
-                  {...register('confirmPassword')}
+                  {...register("confirmPassword")}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -122,7 +121,7 @@ export default function Register() {
                   label="Bio"
                   id="bio"
                   autoComplete="bio"
-                  {...register('bio')}
+                  {...register("bio")}
                 />
               </Grid>
             </Grid>
@@ -143,6 +142,7 @@ export default function Register() {
             </Grid>
           </form>
         </Box>
+        <IonImg src="/meal.png" className={classes.meal} />
       </Box>
     </Container>
   );

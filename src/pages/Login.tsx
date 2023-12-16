@@ -4,7 +4,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
-import PersonIcon from "@mui/icons-material/Person";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useHistory } from "react-router";
@@ -12,6 +11,8 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { getLogger } from "../utils";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { IonImg } from "@ionic/react";
+import classes from "./Login.module.css"
 
 const log = getLogger("Login");
 
@@ -21,7 +22,7 @@ interface LoginState {
 }
 
 export default function Login() {
-  const isPhone = useMediaQuery("(max-width:420px)");
+  const isPhone = useMediaQuery("(max-width:480px)");
   const [state, setState] = useState<LoginState>({});
   const { username, password } = state;
   const { isAuthenticated, isAuthenticating, login, authenticationError } =
@@ -53,15 +54,13 @@ export default function Login() {
       <CssBaseline />
       <Box
         sx={{
-          marginTop: isPhone ? 20 : 18,
+          marginTop: isPhone ? 15 : 5,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-          <PersonIcon />
-        </Avatar>
+        <IonImg src="/bucatar.jpeg" className={classes.bucatar} />
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
@@ -102,6 +101,7 @@ export default function Login() {
             </Link>
           </Box>
         </Box>
+          <IonImg src="/meal.png" className={classes.meal} />
       </Box>
     </Container>
   );
