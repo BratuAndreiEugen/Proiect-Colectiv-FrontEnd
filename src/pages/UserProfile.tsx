@@ -76,7 +76,8 @@ const UserProfile: React.FC = () => {
           <div className={classes.userProfile}>
             <div className={classes.header}>
               <h1 className={classes.username}>{username}</h1>
-              <IonButton className={classes.followButton} onClick={follow}>{following ? 'Unfollow' : 'Follow'}</IonButton>
+              {username != localStorage.getItem("username") ?
+              (<IonButton className={classes.followButton} onClick={follow}>{following ? 'Unfollow' : 'Follow'}</IonButton>): <p></p>}
             </div>
             <p className={classes.description}>{bio}</p>
             <h2>Recipes:</h2>

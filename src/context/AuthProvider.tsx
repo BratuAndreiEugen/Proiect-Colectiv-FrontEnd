@@ -129,10 +129,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
         const { username, password, userId } = state;
         const authToken = await loginRequest(username, password);
+        const response = await getUserByUsername(username);
+        setState({
+          ...state,
+          userId: response.id
+        })
         if (canceled) {
           return;
         }
-        log("authenticate succeeded");
+        log("authenticate succeeded" + userId);
         setState({
           ...state,
           token: authToken,

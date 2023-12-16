@@ -14,7 +14,7 @@ import { Rating, RatingRequest } from "../model/Rating";
 
 export const getAllRecipes = (userId: number) => {
   return withLogs(
-    axios.get(baseUrl + "/recipes/user/not/" + userId.toString(), config),
+    axios.get(baseUrl + `/recipes/getAllRecipes/${userId}`, config),
     "register"
   );
 };
