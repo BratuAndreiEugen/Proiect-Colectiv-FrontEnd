@@ -20,8 +20,10 @@ export const followWithId = (data: {followerId: number, followeeId: number}) => 
 export const followWithUsername = (data: {userName: string, followeeId: number}) => {
     return withLogs(axios.post(`${baseUrl}/follow/followWithUsername`, data, config), 'followWithUsername');
 }
-export const getFollowersId= (id: string) => {
+export const getFollowersId= (id: number) => {
     return withLogs(axios.get(`${baseUrl}/follow/getFollowers?id=${id}`, config), 'followWithUsername');
 }
 
-
+export const getFollowingUsers = (id: number) => {
+    return withLogs(axios.get(`${baseUrl}/follow/getFollowingUsers?id=${id}`, config), 'getFollowingById')
+}

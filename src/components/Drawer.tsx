@@ -1,18 +1,34 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthProvider";
-import { IonButton, IonContent, IonFooter, IonMenu, IonText } from "@ionic/react";
+import { getFollowingUsers } from "../requests/userService";
+import {
+  IonButton,
+  IonContent,
+  IonFooter,
+  IonList,
+  IonMenu,
+  IonText,
+} from "@ionic/react";
 import classes from "./Drawer.module.css";
-import Button from "@mui/material/Button";
-import { Follow } from "../model/Follow";
-import { getFollowersUserName, getUserByUsername } from "../requests/userService";
-import { UserShort } from "../model/user";
 
 interface DrawerProps {
   contentId: string;
 }
 
 const Drawer = ({ contentId }: DrawerProps) => {
-  const { username, logout } = useContext(AuthContext);
+  const { username, logout, userId } = useContext(AuthContext);
+  const [following, setFollowing] = useState<[]>([]);
+
+  useEffect(() => {
+    const getFollowing = async () => {
+      if (userId) {
+        const followingList = await getFollowingUsers(userId);
+        setFollowing(followingList);
+      }
+    };
+
+    getFollowing();
+  }, []);
 
   return (
     <>
@@ -29,17 +45,33 @@ const Drawer = ({ contentId }: DrawerProps) => {
             >
               {username}
             </IonText>
-            <IonText
-              style={{
-                textAlign: "left",
-                padding: "20px",
-            }}>
-              Favorite cooks
-            </IonText>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              padding: "10px",
+            }}
+          >
+            <div style={{ flex: 1, textAlign: "center" }}>
+              <IonText>My followers</IonText>
+            </div>
+            <div style={{ flex: 1, textAlign: "center" }}>
+              <IonText>Following</IonText>
+              <IonList>
+                <IonText>gabi_mirgea</IonText>
+              </IonList>
+            </div>
           </div>
         </IonContent>
         <IonFooter>
-          <IonButton onClick={logout} expand="block" style={{padding: "5px", color: "white"}}>Logout</IonButton>
+          <IonButton
+            onClick={logout}
+            expand="block"
+            style={{ padding: "5px", color: "white" }}
+          >
+            Logout
+          </IonButton>
         </IonFooter>
       </IonMenu>
     </>
