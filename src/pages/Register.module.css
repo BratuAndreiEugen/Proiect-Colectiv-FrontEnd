@@ -1,0 +1,30 @@
+.bucatar {
+  width: 200px;
+}
+
+.meal {
+  width: 230px;
+  margin-top: 60px;
+}
+
+@media screen and (max-width: 768px) {
+  .bucatar {
+    width: 160px;
+  }
+
+  .meal {
+    width: 180px;
+    margin-top: 40px;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  .bucatar {
+    width: 150px;
+    margin-top: 40px;
+  }
+
+  .meal {
+    display: none;
+  }
+}
