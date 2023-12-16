@@ -20,12 +20,14 @@ interface RecipeDTO {
   id: number;
   title: string;
   caption: string;
-  averageRating: number;
   thumbnailLink: string;
   videoLink: string;
   uploadDate: string;
   posterId: number;
   posterUsername: string;
+  healthAverageRating: number;
+  nutritionAverageRating: number;
+  tasteAverageRating: number;
 }
 
 interface ImageDTO {
@@ -158,7 +160,15 @@ const PostDetail: React.FC = () => {
                     by {recipeDetail.posterUsername}
                   </p>
                   <IonButton className={classes.follow_button} size="small" onClick={follow}>{following ? 'Unfollow' : 'Follow'}</IonButton>
-                  <ShortRatingDisplay rating={recipeDetail.averageRating}/>
+                  <Tooltip title="Healthy">
+                    <RatingDisplay rating={recipeDetail.healthAverageRating} type="healthy"/>
+                  </Tooltip>
+                  <Tooltip title="Nutritional">
+                    <RatingDisplay rating={recipeDetail.nutritionAverageRating} type="nutritive"/>
+                  </Tooltip>
+                  <Tooltip title="Tasty">
+                    <RatingDisplay rating={recipeDetail.tasteAverageRating} type="tasty"/>
+                  </Tooltip>
                 </div>
                 {/* <IonImg
                   src={recipeDetail.thumbnailLink}
