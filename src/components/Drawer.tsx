@@ -74,57 +74,63 @@ const Drawer = ({ contentId }: DrawerProps) => {
             style={{
               display: "flex",
               justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
               padding: "10px",
             }}
           >
             <div style={{ flex: 1, textAlign: "center" }}>
               <IonText>My followers</IonText>
               <IonList style={{ marginTop: "10px" }}>
-                {followers?.map((user) => (
-                  <div
-                    style={{
-                      marginBottom: "10px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "flex-start",
-                      gap: "2px",
-                      cursor: "pointer",
-                      marginLeft: "15px"
-                    }}
-                    onClick={() => redirectToUserProfile(user.username)}
-                  >
-                    <IonImg
-                      src="/bucatar-incercuit.jpg"
-                      className={classes.bucatar}
-                    />
-                    {user.username}
-                  </div>
-                ))}
+                {followers &&
+                  followers.length > 0 &&
+                  followers.map((user) => (
+                    <div
+                      style={{
+                        marginBottom: "10px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "2px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => redirectToUserProfile(user.username)}
+                    >
+                      <IonImg
+                        src="/bucatar-incercuit.jpg"
+                        className={classes.bucatar}
+                      />
+                      {user.username}
+                    </div>
+                  ))}
+                {followers && followers.length <= 0 && <div>-</div>}
               </IonList>
             </div>
-            <div style={{ flex: 1, textAlign: "center" }}>
+            <div style={{ flex: 1, textAlign: "center", marginTop: "20px" }}>
               <IonText>Following</IonText>
               <IonList style={{ marginTop: "10px" }}>
-                {following?.map((user) => (
-                  <div
-                    style={{
-                      marginBottom: "10px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "flex-start",
-                      gap: "2px",
-                      cursor: "pointer",
-                      marginLeft: "15px"
-                    }}
-                    onClick={() => redirectToUserProfile(user.username)}
-                  >
-                    <IonImg
-                      src="/bucatar-incercuit.jpg"
-                      className={classes.bucatar}
-                    />
-                    {user.username}
-                  </div>
-                ))}
+                {following &&
+                  following.length > 0 &&
+                  following?.map((user) => (
+                    <div
+                      style={{
+                        marginBottom: "10px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                        gap: "2px",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => redirectToUserProfile(user.username)}
+                    >
+                      <IonImg
+                        src="/bucatar-incercuit.jpg"
+                        className={classes.bucatar}
+                      />
+                      {user.username}
+                    </div>
+                  ))}
+                {following && following.length <= 0 && <div>-</div>}
               </IonList>
             </div>
           </div>
