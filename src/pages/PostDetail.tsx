@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
-import { IonButton, IonContent, IonImg, IonPage } from "@ionic/react";
+import { IonButton, IonContent, IonPage } from "@ionic/react";
 import Header from "../components/Header";
 import Drawer from "../components/Drawer";
 import classes from "./PostDetail.module.css";
@@ -10,13 +10,11 @@ import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import RatingDisplay from "../components/RatingDisplay";
 import Tooltip from "@mui/material/Tooltip";
-import ShortRatingDisplay from "../components/ShortRatingDisplay";
 import {
-  addRecipe,
   calculateAverageRating,
   updateRating,
 } from "../requests/recipeService";
-import { Rating, RatingRequest } from "../model/Rating";
+import { RatingRequest } from "../model/Rating";
 import { Follow } from "../model/Follow";
 import {
   followWithUsername,
@@ -67,9 +65,7 @@ const PostDetail: React.FC = () => {
         const loggedUserId = localStorage.getItem("id");
         if (loggedUserId) {
           setFollowing(
-            followers.some(
-              (follow) => follow.id === parseInt(loggedUserId)
-            )
+            followers.some((follow) => follow.id === parseInt(loggedUserId))
           );
         }
 
@@ -78,8 +74,11 @@ const PostDetail: React.FC = () => {
         const resp = await axios.get(
           `http://localhost:8080/v1/recipes/rating/${postId}/${id}`
         );
-        if(resp.data.healthGrade && resp.data.nutritionGrade && resp.data.tasteGrade)
-        {
+        if (
+          resp.data.healthGrade &&
+          resp.data.nutritionGrade &&
+          resp.data.tasteGrade
+        ) {
           setHealthy(resp.data.healthGrade);
           setNutritive(resp.data.nutritionGrade);
           setTasty(resp.data.tasteGrade);
@@ -196,15 +195,18 @@ const PostDetail: React.FC = () => {
                   <p className={classes.user_name} onClick={redirectToUserPage}>
                     by {recipeDetail.posterUsername}
                   </p>
-                  {recipeDetail.posterUsername != localStorage.getItem("username") ?
-                  <IonButton
-                    className={classes.follow_button}
-                    size="small"
-                    onClick={follow}
-                  >
-                    {following ? "Unfollow" : "Follow"}
-                  </IonButton> : <p></p>
-                  }
+                  {recipeDetail.posterUsername !=
+                  localStorage.getItem("username") ? (
+                    <IonButton
+                      className={classes.follow_button}
+                      size="small"
+                      onClick={follow}
+                    >
+                      {following ? "Unfollow" : "Follow"}
+                    </IonButton>
+                  ) : (
+                    <p></p>
+                  )}
                   <Tooltip title="Healthy">
                     <RatingDisplay
                       rating={recipeDetail.healthAverageRating}
@@ -242,6 +244,7 @@ const PostDetail: React.FC = () => {
                 </video>
 
                 <div
+                  style={{ marginTop: "15px" }}
                   dangerouslySetInnerHTML={{ __html: recipeDetail.caption }}
                 ></div>
 
@@ -251,7 +254,7 @@ const PostDetail: React.FC = () => {
                 </p> */}
 
                 <div className={classes.slider_container}>
-                  <div>
+                  <div style={{ marginTop: "15px", marginBottom: "10px" }}>
                     <div>Healthy</div>
                     <div className={classes.flexRow}>
                       <input
@@ -297,6 +300,7 @@ const PostDetail: React.FC = () => {
                     className={classes.follow_button}
                     onClick={postNewRating}
                     size="small"
+                    style={{marginTop: "15px"}}
                   >
                     Rate
                   </IonButton>

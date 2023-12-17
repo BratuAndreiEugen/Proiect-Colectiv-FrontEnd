@@ -57,18 +57,21 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                 <RatingDisplay
                   rating={recipe.healthAverageRating}
                   type="healthy"
+                  feed
                 />
               </Tooltip>
               <Tooltip title="Nutritional">
                 <RatingDisplay
                   rating={recipe.nutritionAverageRating}
                   type="nutritive"
+                  feed
                 />
               </Tooltip>
               <Tooltip title="Tasty">
                 <RatingDisplay
                   rating={recipe.tasteAverageRating}
                   type="tasty"
+                  feed
                 />
               </Tooltip>
             </div>

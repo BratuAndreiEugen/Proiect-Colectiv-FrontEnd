@@ -7,14 +7,14 @@ import {
   BsEmojiSmileFill,
   BsFillEmojiDizzyFill,
 } from "react-icons/bs";
-import classes from "../pages/PostDetail.module.css";
 
 interface RatingDisplayProps {
   rating: number;
   type: "healthy" | "nutritive" | "tasty";
+  feed?: boolean;
 }
 
-const RatingDisplay = ({ rating, type }: RatingDisplayProps) => {
+const RatingDisplay = ({ rating, type, feed }: RatingDisplayProps) => {
   const displayedRating = rating / 10;
   const color =
     type === "healthy" ? "#68c468" : type === "tasty" ? "#fb8846" : "#dad74e";
@@ -26,7 +26,7 @@ const RatingDisplay = ({ rating, type }: RatingDisplayProps) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        gap: "3px",
+        gap: feed ? "4px" : "6px",
       }}
     >
       {displayedRating <= 1 ? (

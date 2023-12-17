@@ -22,8 +22,8 @@ video {
 
 .slider_container input[type="range"] {
   width: 200px;
-  margin-bottom: 10px;
   display: inline;
+  align-items: center;
 }
 
 .slider_healthy {
@@ -76,6 +76,7 @@ video {
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  height: 40px
 }
 
 @media (max-width: 768px) {
@@ -95,5 +96,9 @@ video {
 
   .follow_button {
     margin-left: 1px;
+  }
+
+  .flexRow {
+    justify-content: center;
   }
 }
