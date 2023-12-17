@@ -9,6 +9,7 @@ import {
   IonContent,
   IonFooter,
   IonIcon,
+  IonImg,
   IonList,
   IonMenu,
   IonText,
@@ -85,15 +86,16 @@ const Drawer = ({ contentId }: DrawerProps) => {
                       marginBottom: "10px",
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "center",
+                      justifyContent: "flex-start",
                       gap: "2px",
                       cursor: "pointer",
+                      marginLeft: "15px"
                     }}
                     onClick={() => redirectToUserProfile(user.username)}
                   >
-                    <IonIcon
-                      icon={personCircleOutline}
-                      className={classes.button}
+                    <IonImg
+                      src="/bucatar-incercuit.jpg"
+                      className={classes.bucatar}
                     />
                     {user.username}
                   </div>
@@ -109,15 +111,16 @@ const Drawer = ({ contentId }: DrawerProps) => {
                       marginBottom: "10px",
                       display: "flex",
                       alignItems: "center",
-                      justifyContent: "center",
+                      justifyContent: "flex-start",
                       gap: "2px",
                       cursor: "pointer",
+                      marginLeft: "15px"
                     }}
                     onClick={() => redirectToUserProfile(user.username)}
                   >
-                    <IonIcon
-                      icon={personCircleOutline}
-                      className={classes.button}
+                    <IonImg
+                      src="/bucatar-incercuit.jpg"
+                      className={classes.bucatar}
                     />
                     {user.username}
                   </div>

@@ -8,17 +8,19 @@
   margin: auto auto 20px;
 }
 
-.content {
-  width: calc(100% + 25px);
-}
-
-.content::part(scroll) {
-  padding-right: 7px;
-}
-
 @media (max-width: 768px) {
   .recipes {
     width: 70%;
     gap: 0px;
+  }
+}
+
+@media (min-width: 768px) {
+  .content {
+    width: calc(100% + 25px);
+  }
+
+  .content::part(scroll) {
+    padding-right: 7px;
   }
 }

@@ -32,7 +32,7 @@ function Header() {
     if (!isOpenSearch) {
       setIsOpenSearch(!isOpenSearch);
     } else {
-      if(searchValue){
+      if (searchValue) {
         history.push(`/user/${searchValue}`);
       }
     }
@@ -66,9 +66,9 @@ function Header() {
               icon={searchCircleOutline}
               className={classes.button}
             />
-            <IonIcon
-              icon={personCircleOutline}
-              className={classes.button}
+            <IonImg
+              src="/bucatar-incercuit.jpg"
+              className={classes.bucatar}
               onClick={redirectToUserProfile}
             />
             {/* <IonImg

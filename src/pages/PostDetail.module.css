@@ -81,25 +81,27 @@ video {
   color: white;
 }
 
-.content {
-  width: calc(100% + 25px);
-}
-
-.content::part(scroll) {
-  padding-right: 7px;
-}
-
 .flexRow {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
-  height: 40px
+  height: 40px;
+}
+
+@media (min-width: 768px) {
+  .content {
+    width: calc(100% + 25px);
+  }
+
+  .content::part(scroll) {
+    padding-right: 7px;
+  }
 }
 
 @media (max-width: 768px) {
   .container {
-    width: 80%;
+    width: 90%;
     text-align: center;
   }
 
