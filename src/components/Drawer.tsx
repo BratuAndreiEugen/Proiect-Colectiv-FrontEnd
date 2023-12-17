@@ -1,34 +1,57 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthProvider";
-import { getFollowingUsers } from "../requests/userService";
+import {
+  getFollowingByUsername,
+  getFollowersByUsername,
+} from "../requests/userService";
 import {
   IonButton,
   IonContent,
   IonFooter,
+  IonIcon,
   IonList,
   IonMenu,
   IonText,
 } from "@ionic/react";
 import classes from "./Drawer.module.css";
+import { personCircleOutline } from "ionicons/icons";
+import { useHistory } from "react-router";
 
 interface DrawerProps {
   contentId: string;
 }
 
+interface User {
+  id: number;
+  username: string;
+}
+
 const Drawer = ({ contentId }: DrawerProps) => {
-  const { username, logout, userId } = useContext(AuthContext);
-  const [following, setFollowing] = useState<[]>([]);
+  const { username, logout } = useContext(AuthContext);
+  const [followers, setFollowers] = useState<[User]>();
+  const [following, setFollowing] = useState<[User]>();
+  const history = useHistory();
 
   useEffect(() => {
     const getFollowing = async () => {
-      if (userId) {
-        const followingList = await getFollowingUsers(userId);
+      if (username) {
+        const followersList = await getFollowingByUsername(username);
+        const followingList = await getFollowersByUsername(username);
+        setFollowers(followersList);
         setFollowing(followingList);
       }
     };
 
     getFollowing();
   }, []);
+
+  const redirectToUserProfile = (followerUsername: string) => {
+    if (followerUsername) {
+      history.push(`/user/${followerUsername}`);
+    } else {
+      console.error("User ID not available.");
+    }
+  };
 
   return (
     <>
@@ -55,11 +78,50 @@ const Drawer = ({ contentId }: DrawerProps) => {
           >
             <div style={{ flex: 1, textAlign: "center" }}>
               <IonText>My followers</IonText>
+              <IonList style={{ marginTop: "10px" }}>
+                {followers?.map((user) => (
+                  <div
+                    style={{
+                      marginBottom: "10px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "2px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => redirectToUserProfile(user.username)}
+                  >
+                    <IonIcon
+                      icon={personCircleOutline}
+                      className={classes.button}
+                    />
+                    {user.username}
+                  </div>
+                ))}
+              </IonList>
             </div>
             <div style={{ flex: 1, textAlign: "center" }}>
               <IonText>Following</IonText>
-              <IonList>
-                <IonText>gabi_mirgea</IonText>
+              <IonList style={{ marginTop: "10px" }}>
+                {following?.map((user) => (
+                  <div
+                    style={{
+                      marginBottom: "10px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "2px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => redirectToUserProfile(user.username)}
+                  >
+                    <IonIcon
+                      icon={personCircleOutline}
+                      className={classes.button}
+                    />
+                    {user.username}
+                  </div>
+                ))}
               </IonList>
             </div>
           </div>
