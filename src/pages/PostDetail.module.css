@@ -56,9 +56,17 @@ video {
 }
 
 .followButton {
-  font-size: 12px;
+  font-size: 13px;
   text-transform: none;
   --border-radius: 15px;
+}
+
+.rateButton {
+  font-size: 13px;
+  text-transform: none;
+  height: 50%;
+  width: 34%;
+  color: white;
 }
 
 .followButtonUnfollow {
@@ -110,5 +118,10 @@ video {
 
   .flexRow {
     justify-content: center;
+  }
+
+  .rateButton {
+    margin: auto;
+    width: 65%;
   }
 }

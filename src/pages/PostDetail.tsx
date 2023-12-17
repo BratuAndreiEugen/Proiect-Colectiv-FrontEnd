@@ -61,7 +61,6 @@ const PostDetail: React.FC = () => {
         const followers: Follow[] = await getFollowingByUsername(
           recipeData.posterUsername
         );
-        console.log(followers);
         const loggedUserId = localStorage.getItem("id");
         if (loggedUserId) {
           setFollowing(
@@ -198,11 +197,14 @@ const PostDetail: React.FC = () => {
                   {recipeDetail.posterUsername !=
                   localStorage.getItem("username") ? (
                     <IonButton
-                      className={classes.followButton +
+                      className={
+                        classes.followButton +
                         " " +
                         (following
                           ? classes.followButtonUnfollow
-                          : classes.followButtonFollow)}
+                          : classes.followButtonFollow)
+                      }
+                      style={{ marginRight: "5px" }}
                       size="small"
                       onClick={follow}
                     >
@@ -301,10 +303,10 @@ const PostDetail: React.FC = () => {
                     </div>
                   </div>
                   <IonButton
-                    className={classes.follow_button}
+                    className={classes.rateButton}
                     onClick={postNewRating}
                     size="small"
-                    style={{marginTop: "15px"}}
+                    style={{ marginTop: "15px" }}
                   >
                     Rate
                   </IonButton>

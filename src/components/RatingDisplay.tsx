@@ -26,7 +26,7 @@ const RatingDisplay = ({ rating, type, feed }: RatingDisplayProps) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        gap: feed ? "4px" : "6px",
+        gap: feed ? "4px" : "5px",
       }}
     >
       {displayedRating <= 1 ? (
