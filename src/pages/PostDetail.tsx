@@ -192,13 +192,15 @@ const PostDetail: React.FC = () => {
                   <p className={classes.user_name} onClick={redirectToUserPage}>
                     by {recipeDetail.posterUsername}
                   </p>
+                  {recipeDetail.posterUsername != localStorage.getItem("username") ?
                   <IonButton
                     className={classes.follow_button}
                     size="small"
                     onClick={follow}
                   >
                     {following ? "Unfollow" : "Follow"}
-                  </IonButton>
+                  </IonButton> : <p></p>
+                  }
                   <Tooltip title="Healthy">
                     <RatingDisplay
                       rating={recipeDetail.healthAverageRating}
