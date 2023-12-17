@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
-import { IonButton, IonContent, IonImg, IonPage} from "@ionic/react";
+import { IonButton, IonContent, IonImg, IonPage } from "@ionic/react";
 import Header from "../components/Header";
 import Drawer from "../components/Drawer";
 import classes from "./PostDetail.module.css";
@@ -9,12 +9,19 @@ import Footer from "../components/Footer";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import RatingDisplay from "../components/RatingDisplay";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 import ShortRatingDisplay from "../components/ShortRatingDisplay";
-import { addRecipe, calculateAverageRating, updateRating } from "../requests/recipeService";
+import {
+  addRecipe,
+  calculateAverageRating,
+  updateRating,
+} from "../requests/recipeService";
 import { Rating, RatingRequest } from "../model/Rating";
 import { Follow } from "../model/Follow";
-import { followWithUsername, getFollowersUserName } from "../requests/userService";
+import {
+  followWithUsername,
+  getFollowersUserName,
+} from "../requests/userService";
 
 interface RecipeDTO {
   id: number;
@@ -31,7 +38,7 @@ interface RecipeDTO {
 }
 
 interface ImageDTO {
-  original : string;
+  original: string;
 }
 
 const PostDetail: React.FC = () => {
@@ -52,25 +59,27 @@ const PostDetail: React.FC = () => {
           `http://localhost:8080/v1/recipes/${postId}`
         );
         const recipeData: RecipeDTO = response.data;
-        console.log(response.data)
         setRecipeDetail(recipeData);
-        const followers: Follow[] = await getFollowersUserName(recipeData.posterUsername);
+        const followers: Follow[] = await getFollowersUserName(
+          recipeData.posterUsername
+        );
         const loggedUserId = localStorage.getItem("id");
-        if(loggedUserId) {
-          setFollowing(followers.some(follow => follow.foloweeId === parseInt(loggedUserId)));
+        if (loggedUserId) {
+          setFollowing(
+            followers.some(
+              (follow) => follow.foloweeId === parseInt(loggedUserId)
+            )
+          );
         }
 
         const idStr = localStorage.getItem("id");
         const id = idStr !== null ? Number.parseInt(idStr) : 0;
         const resp = await axios.get(
-          
           `http://localhost:8080/v1/recipes/rating/${postId}/${id}`
         );
-        // setHealthy(resp.data.healthGrade);
-        // setNutritive(resp.data.nutritionGrade);
-        // setTasty(resp.data.tasteGrade);
-        console.log("RESPPP " + resp);
-        console.log(resp);
+        setHealthy(resp.data.healthGrade);
+        setNutritive(resp.data.nutritionGrade);
+        setTasty(resp.data.tasteGrade);
 
         setLoading(false);
       } catch (error) {
@@ -79,71 +88,74 @@ const PostDetail: React.FC = () => {
     };
 
     const fetchRecipeExtraPhotos = async () => {
-      try{
-        const response = await axios.get(`http://localhost:5114/api/File/photos/${postId}`);
+      try {
+        const response = await axios.get(
+          `http://localhost:5114/api/File/photos/${postId}`
+        );
         const list = response.data;
-        const finalList = list.map((imageDTO: { uri: any; }) => ({
-          original : imageDTO.uri
-        }))
-        
+        const finalList = list.map((imageDTO: { uri: any }) => ({
+          original: imageDTO.uri,
+        }));
+
         setRecipeExtraPhotos(finalList);
         setLoading(false);
-      }catch(error){
+      } catch (error) {
         console.error("Error fetching recipe photos:", error);
       }
-    }
+    };
 
     fetchRecipeDetail();
     fetchRecipeExtraPhotos();
   }, [postId]);
 
   const redirectToUserPage = async () => {
-    try{
+    try {
       history.push(`/user/${recipeDetail?.posterUsername}`);
-    }catch{
+    } catch {
       console.log("Redirect FAILED in PostDetail.tsx");
     }
-  }
+  };
 
   const postNewRating = async () => {
-    try{
+    try {
       const userId = localStorage.getItem("id");
 
-      if(recipeDetail?.id && userId){
+      if (recipeDetail?.id && userId) {
         const data: RatingRequest = {
           healthy: healthy,
           nutritive: nutritive,
           tasty: tasty,
           userId: parseInt(userId),
-        }
-        console.log("DATA ");
-        console.log(data);
+        };
         await updateRating(data, recipeDetail?.id);
         const resp = await calculateAverageRating(recipeDetail?.id);
         setRecipeDetail({
           ...recipeDetail,
-          healthAverageRating : resp.data.healthAverageRating,
-          nutritionAverageRating : resp.data.nutritionAverageRating,
-          tasteAverageRating : resp.data.tasteAverageRating
+          healthAverageRating: resp.data.healthAverageRating,
+          nutritionAverageRating: resp.data.nutritionAverageRating,
+          tasteAverageRating: resp.data.tasteAverageRating,
         });
       }
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   const follow = async () => {
-    try{
+    try {
       const loggedUserId = localStorage.getItem("id");
-      if(loggedUserId && recipeDetail?.posterUsername){
-        await followWithUsername({ userName: recipeDetail?.posterUsername, followeeId: parseInt(loggedUserId) })
+      if (loggedUserId && recipeDetail?.posterUsername) {
+        await followWithUsername({
+          userName: recipeDetail?.posterUsername,
+          followeeId: parseInt(loggedUserId),
+        });
         setFollowing(!following);
       }
     } catch (error) {
       console.error("Error sending follow request:", error);
       setLoading(false);
     }
-  }
+  };
 
   //limit calls
   const [debouncedHealthy, setDebouncedHealthy] = useState(0);
@@ -180,15 +192,30 @@ const PostDetail: React.FC = () => {
                   <p className={classes.user_name} onClick={redirectToUserPage}>
                     by {recipeDetail.posterUsername}
                   </p>
-                  <IonButton className={classes.follow_button} size="small" onClick={follow}>{following ? 'Unfollow' : 'Follow'}</IonButton>
+                  <IonButton
+                    className={classes.follow_button}
+                    size="small"
+                    onClick={follow}
+                  >
+                    {following ? "Unfollow" : "Follow"}
+                  </IonButton>
                   <Tooltip title="Healthy">
-                    <RatingDisplay rating={recipeDetail.healthAverageRating} type="healthy"/>
+                    <RatingDisplay
+                      rating={recipeDetail.healthAverageRating}
+                      type="healthy"
+                    />
                   </Tooltip>
                   <Tooltip title="Nutritional">
-                    <RatingDisplay rating={recipeDetail.nutritionAverageRating} type="nutritive"/>
+                    <RatingDisplay
+                      rating={recipeDetail.nutritionAverageRating}
+                      type="nutritive"
+                    />
                   </Tooltip>
                   <Tooltip title="Tasty">
-                    <RatingDisplay rating={recipeDetail.tasteAverageRating} type="tasty"/>
+                    <RatingDisplay
+                      rating={recipeDetail.tasteAverageRating}
+                      type="tasty"
+                    />
                   </Tooltip>
                 </div>
                 {/* <IonImg
@@ -196,7 +223,11 @@ const PostDetail: React.FC = () => {
                   alt={recipeDetail.title}
                 /> */}
                 <div>
-                  <ImageGallery showPlayButton = {false} infinite = {true} items = {recipeExtraPhotos}/>
+                  <ImageGallery
+                    showPlayButton={false}
+                    infinite={true}
+                    items={recipeExtraPhotos}
+                  />
                 </div>
 
                 <video controls>
@@ -204,9 +235,10 @@ const PostDetail: React.FC = () => {
                   Your browser does not support the video tag.
                 </video>
 
-                
-                  <div dangerouslySetInnerHTML={{ __html: recipeDetail.caption }}></div>
-                
+                <div
+                  dangerouslySetInnerHTML={{ __html: recipeDetail.caption }}
+                ></div>
+
                 {/* <p>
                   <strong>Nutritional Value:</strong>{" "}
                   {recipeDetail.averageRating}
@@ -224,7 +256,7 @@ const PostDetail: React.FC = () => {
                         onChange={(e) => setHealthy(parseInt(e.target.value))}
                         className={classes.slider_healthy}
                       />
-                      <RatingDisplay rating={healthy} type="healthy"/>
+                      <RatingDisplay rating={healthy} type="healthy" />
                     </div>
                   </div>
                   <div>
@@ -238,7 +270,7 @@ const PostDetail: React.FC = () => {
                         onChange={(e) => setNutritive(parseInt(e.target.value))}
                         className={classes.slider_nutritive}
                       />
-                      <RatingDisplay rating={nutritive} type="nutritive"/>
+                      <RatingDisplay rating={nutritive} type="nutritive" />
                     </div>
                   </div>
                   <div>
@@ -252,10 +284,16 @@ const PostDetail: React.FC = () => {
                         onChange={(e) => setTasty(parseInt(e.target.value))}
                         className={classes.slider_tasty}
                       />
-                      <RatingDisplay rating={tasty} type="tasty"/>
+                      <RatingDisplay rating={tasty} type="tasty" />
                     </div>
                   </div>
-                  <IonButton className={classes.follow_button} onClick={postNewRating} size="small">Rate</IonButton>
+                  <IonButton
+                    className={classes.follow_button}
+                    onClick={postNewRating}
+                    size="small"
+                  >
+                    Rate
+                  </IonButton>
                 </div>
               </div>
             ) : (
