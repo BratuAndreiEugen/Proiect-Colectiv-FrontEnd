@@ -11,7 +11,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import RatingDisplay from "../components/RatingDisplay";
 import Tooltip from '@mui/material/Tooltip';
 import ShortRatingDisplay from "../components/ShortRatingDisplay";
-import { addRecipe, updateRating } from "../requests/recipeService";
+import { addRecipe, calculateAverageRating, updateRating } from "../requests/recipeService";
 import { Rating, RatingRequest } from "../model/Rating";
 import { Follow } from "../model/Follow";
 import { followWithUsername, getFollowersUserName } from "../requests/userService";
@@ -52,12 +52,25 @@ const PostDetail: React.FC = () => {
           `http://localhost:8080/v1/recipes/${postId}`
         );
         const recipeData: RecipeDTO = response.data;
+        console.log(response.data)
         setRecipeDetail(recipeData);
         const followers: Follow[] = await getFollowersUserName(recipeData.posterUsername);
         const loggedUserId = localStorage.getItem("id");
         if(loggedUserId) {
           setFollowing(followers.some(follow => follow.foloweeId === parseInt(loggedUserId)));
         }
+
+        const idStr = localStorage.getItem("id");
+        const id = idStr !== null ? Number.parseInt(idStr) : 0;
+        const resp = await axios.get(
+          
+          `http://localhost:8080/v1/recipes/rating/${postId}/${id}`
+        );
+        // setHealthy(resp.data.healthGrade);
+        // setNutritive(resp.data.nutritionGrade);
+        // setTasty(resp.data.tasteGrade);
+        console.log("RESPPP " + resp);
+        console.log(resp);
 
         setLoading(false);
       } catch (error) {
@@ -103,8 +116,16 @@ const PostDetail: React.FC = () => {
           tasty: tasty,
           userId: parseInt(userId),
         }
-
+        console.log("DATA ");
+        console.log(data);
         await updateRating(data, recipeDetail?.id);
+        const resp = await calculateAverageRating(recipeDetail?.id);
+        setRecipeDetail({
+          ...recipeDetail,
+          healthAverageRating : resp.data.healthAverageRating,
+          nutritionAverageRating : resp.data.nutritionAverageRating,
+          tasteAverageRating : resp.data.tasteAverageRating
+        });
       }
     } catch (err) {
       console.log(err);
@@ -139,9 +160,9 @@ const PostDetail: React.FC = () => {
     return () => clearTimeout(timeoutId);
   }, [healthy, nutritive, tasty]);
 
-  useEffect(() => {
-    postNewRating();
-  }, [debouncedHealthy, debouncedNutritive, debouncedTasty]);
+  // useEffect(() => {
+  //   postNewRating();
+  // }, [debouncedHealthy, debouncedNutritive, debouncedTasty]);
 
   return (
     <>
@@ -183,9 +204,9 @@ const PostDetail: React.FC = () => {
                   Your browser does not support the video tag.
                 </video>
 
-                <p>
+                
                   <div dangerouslySetInnerHTML={{ __html: recipeDetail.caption }}></div>
-                </p>
+                
                 {/* <p>
                   <strong>Nutritional Value:</strong>{" "}
                   {recipeDetail.averageRating}
@@ -234,6 +255,7 @@ const PostDetail: React.FC = () => {
                       <RatingDisplay rating={tasty} type="tasty"/>
                     </div>
                   </div>
+                  <IonButton className={classes.follow_button} onClick={postNewRating} size="small">Rate</IonButton>
                 </div>
               </div>
             ) : (

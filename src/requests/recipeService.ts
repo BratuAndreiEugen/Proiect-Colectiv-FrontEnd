@@ -33,6 +33,13 @@ export const updateRating = (data: RatingRequest, recipeId: number) => {
   );
 };
 
+export const calculateAverageRating = (recipeId: number) => {
+  return withLogs(
+    axios.put(baseUrl + `/recipes/${recipeId}/averageRating`,[], config),
+    "updateAverage"
+  )
+}
+
 export const getRecipesByUser = (userId: number) => {
   return withLogs(
     axios.get(`${baseUrl}/recipes/user/${userId}`, config),

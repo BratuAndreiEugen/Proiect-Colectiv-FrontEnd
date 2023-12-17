@@ -127,9 +127,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           ...state,
           isAuthenticating: true,
         });
-        const { username, password, userId } = state;
+        const { username, password} = state;
         const authToken = await loginRequest(username, password);
         const response = await getUserByUsername(username);
+        log("USERNAME " + username);
+        log("ID " + response.id);
+        log(response);
         setState({
           ...state,
           userId: response.id
@@ -146,8 +149,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
         localStorage.setItem("token", authToken);
         localStorage.setItem("username", username);
-        if(userId)
-          localStorage.setItem("id", userId.toString());
+        if(response.id)
+          localStorage.setItem("id", response.id.toString());
       } catch (error) {
         if (canceled) {
           return;
