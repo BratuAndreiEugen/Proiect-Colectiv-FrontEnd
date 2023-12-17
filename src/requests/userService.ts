@@ -9,6 +9,10 @@ export const getFollowersUserName = (username: string) => {
     return withLogs(axios.get(`${baseUrl}/follow/getFollowersWithUsername?username=${username}`, config), 'getFollowersWithUsername');
 }
 
+export const getFollowingUserName = (username: string) => {
+    return withLogs(axios.get(`${baseUrl}/follow/getFollowingWithUsername?username=${username}`, config), 'getFollowingWithUsername');
+}
+
 export const followWithId = (data: {followerId: number, followeeId: number}) => {
     return withLogs(axios.post(`${baseUrl}/follow/follow`, data, config), 'follow');
 }

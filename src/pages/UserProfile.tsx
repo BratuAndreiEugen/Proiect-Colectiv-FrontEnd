@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { followWithUsername, getFollowersUserName, getUserByUsername } from "../requests/userService";
+import { followWithUsername, getFollowersUserName, getFollowingUserName, getUserByUsername } from "../requests/userService";
 import { getRecipesByUser } from "../requests/recipeService";
 import RecipeCard from "../components/RecipeCard";
 import { AuthContext } from "../context/AuthProvider";
@@ -36,11 +36,12 @@ const UserProfile: React.FC = () => {
           setRecipes(recipesResponse);
         } catch (err) {}
 
-        const followers: Follow[] = await getFollowersUserName(username);
+        const followers: Follow[] = await getFollowingUserName(username);
+        console.log("FOUND FOLLOWER ? " + followers)
         const loggedUserId = localStorage.getItem("id");
         if(loggedUserId) {
           const a = followers.some(follow => follow.foloweeId === parseInt(loggedUserId));
-          console.log(a)
+          console.log("FOUND FOLLOWER ? " + a)
           setFollowing(a);
         }
 
