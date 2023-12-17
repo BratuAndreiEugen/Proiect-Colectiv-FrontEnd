@@ -20,7 +20,7 @@ import { Rating, RatingRequest } from "../model/Rating";
 import { Follow } from "../model/Follow";
 import {
   followWithUsername,
-  getFollowersUserName,
+  getFollowingByUsername,
 } from "../requests/userService";
 
 interface RecipeDTO {
@@ -60,14 +60,14 @@ const PostDetail: React.FC = () => {
         );
         const recipeData: RecipeDTO = response.data;
         setRecipeDetail(recipeData);
-        const followers: Follow[] = await getFollowersUserName(
+        const followers: Follow[] = await getFollowingByUsername(
           recipeData.posterUsername
         );
         const loggedUserId = localStorage.getItem("id");
         if (loggedUserId) {
           setFollowing(
             followers.some(
-              (follow) => follow.foloweeId === parseInt(loggedUserId)
+              (follow) => follow.id === parseInt(loggedUserId)
             )
           );
         }

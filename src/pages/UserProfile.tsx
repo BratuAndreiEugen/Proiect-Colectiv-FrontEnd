@@ -1,5 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { followWithUsername, getFollowersUserName, getFollowingUserName, getUserByUsername } from "../requests/userService";
+import {
+  followWithUsername,
+  getFollowersByUsername,
+  getFollowingByUsername,
+  getUserByUsername,
+} from "../requests/userService";
 import { getRecipesByUser } from "../requests/recipeService";
 import RecipeCard from "../components/RecipeCard";
 import { AuthContext } from "../context/AuthProvider";
@@ -36,12 +41,14 @@ const UserProfile: React.FC = () => {
           setRecipes(recipesResponse);
         } catch (err) {}
 
-        const followers: Follow[] = await getFollowingUserName(username);
-        console.log("FOUND FOLLOWER ? " + followers)
+        const followers: Follow[] = await getFollowingByUsername(username);
+        console.log("FOUND FOLLOWER ? " + followers);
         const loggedUserId = localStorage.getItem("id");
-        if(loggedUserId) {
-          const a = followers.some(follow => follow.foloweeId === parseInt(loggedUserId));
-          console.log("FOUND FOLLOWER ? " + a)
+        if (loggedUserId) {
+          const a = followers.some(
+            (follow) => follow.id === parseInt(loggedUserId)
+          );
+          console.log("FOUND FOLLOWER ? " + a);
           setFollowing(a);
         }
 
@@ -56,17 +63,20 @@ const UserProfile: React.FC = () => {
   }, [username]);
 
   const follow = async () => {
-    try{
+    try {
       const loggedUserId = localStorage.getItem("id");
-      if(loggedUserId && viewedUser){
-        await followWithUsername({ userName: viewedUser.username, followeeId: parseInt(loggedUserId) })
+      if (loggedUserId && viewedUser) {
+        await followWithUsername({
+          userName: viewedUser.username,
+          followeeId: parseInt(loggedUserId),
+        });
         setFollowing(!following);
       }
     } catch (error) {
       console.error("Error sending follow request:", error);
       setLoading(false);
     }
-  }
+  };
 
   return (
     <>
@@ -77,14 +87,22 @@ const UserProfile: React.FC = () => {
           <div className={classes.userProfile}>
             <div className={classes.header}>
               <h1 className={classes.username}>{username}</h1>
-              {username != localStorage.getItem("username") ?
-              (<IonButton className={classes.followButton} onClick={follow}>{following ? 'Unfollow' : 'Follow'}</IonButton>): <p></p>}
+              {username != localStorage.getItem("username") ? (
+                <IonButton className={classes.followButton} onClick={follow}>
+                  {following ? "Unfollow" : "Follow"}
+                </IonButton>
+              ) : (
+                <p></p>
+              )}
             </div>
             <p className={classes.description}>{bio}</p>
             <h2>Recipes:</h2>
             {loading ? (
-              <p>Loading...</p>) : recipes.length == 0 && (
-              <p className={classes.description}>No recipes found</p>
+              <p>Loading...</p>
+            ) : (
+              recipes.length == 0 && (
+                <p className={classes.description}>No recipes found</p>
+              )
             )}
             <div className={classes.recipeList}>
               {recipes.map((recipe) => (
