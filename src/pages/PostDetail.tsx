@@ -21,6 +21,7 @@ import { Follow } from "../model/Follow";
 import {
   followWithUsername,
   getFollowersUserName,
+  getFollowingUserName,
 } from "../requests/userService";
 
 interface RecipeDTO {
@@ -60,9 +61,10 @@ const PostDetail: React.FC = () => {
         );
         const recipeData: RecipeDTO = response.data;
         setRecipeDetail(recipeData);
-        const followers: Follow[] = await getFollowersUserName(
+        const followers: Follow[] = await getFollowingUserName(
           recipeData.posterUsername
         );
+        console.log(followers);
         const loggedUserId = localStorage.getItem("id");
         if (loggedUserId) {
           setFollowing(
@@ -77,9 +79,12 @@ const PostDetail: React.FC = () => {
         const resp = await axios.get(
           `http://localhost:8080/v1/recipes/rating/${postId}/${id}`
         );
-        setHealthy(resp.data.healthGrade);
-        setNutritive(resp.data.nutritionGrade);
-        setTasty(resp.data.tasteGrade);
+        if(resp.data.healthGrade && resp.data.nutritionGrade && resp.data.tasteGrade)
+        {
+          setHealthy(resp.data.healthGrade);
+          setNutritive(resp.data.nutritionGrade);
+          setTasty(resp.data.tasteGrade);
+        }
 
         setLoading(false);
       } catch (error) {
