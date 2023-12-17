@@ -43,7 +43,6 @@ function Header() {
       history.push(`/user/${username}`);
     } else {
       console.error("User ID not available.");
-      console.error("User ID not available.");
     }
   };
 
