@@ -34,7 +34,7 @@ const Drawer = ({ contentId }: DrawerProps) => {
                 textAlign: "left",
                 padding: "20px",
             }}>
-              My followers
+              Favorite cooks
             </IonText>
           </div>
         </IonContent>

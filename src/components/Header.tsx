@@ -8,12 +8,13 @@ import {
   IonMenuToggle,
   IonInput,
   InputChangeEventDetail,
+  IonImg,
 } from "@ionic/react";
 import classes from "./Header.module.css";
 import { personCircleOutline, searchCircleOutline } from "ionicons/icons";
 import { FormEventHandler, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthProvider";
-import { Input } from "@mui/icons-material";
+import { Height, Input } from "@mui/icons-material";
 import { useHistory } from "react-router";
 import { getUserByUsername } from "../requests/userService";
 
@@ -71,6 +72,10 @@ function Header() {
               className={classes.button}
               onClick={redirectToUserProfile}
             />
+            {/* <IonImg
+            src="/bucatar.jpeg"
+            className={classes.button}
+            /> */}
           </div>
         </div>
       </IonToolbar>
