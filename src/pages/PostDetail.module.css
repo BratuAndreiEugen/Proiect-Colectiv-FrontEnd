@@ -53,6 +53,7 @@ video {
 
 .user_name {
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .followButton {

@@ -90,7 +90,7 @@ export default function Login() {
           <Button
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{ mt: 3, mb: 2, textTransform: "none", color: "white" }}
             onClick={handleLogin}
           >
             Login

@@ -44,14 +44,14 @@
 @media (max-width: 1000px) {
   .form {
     width: 70%;
-    margin-top: 100px;
+    margin-top: 10px;
   }
 }
 
 @media (max-width: 888px) {
   .form {
     width: 85%;
-    margin-top: 100px;
+    margin-top: 40px;
   }
 }
 

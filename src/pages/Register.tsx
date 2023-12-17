@@ -17,7 +17,7 @@ import { IonImg } from "@ionic/react";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { useHistory } from "react-router";
-import classes from "./Register.module.css"
+import classes from "./Register.module.css";
 
 export interface RegisterFieldValues {
   username: string;
@@ -129,7 +129,7 @@ export default function Register() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, textTransform: "none", color: "white" }}
             >
               Sign Up
             </Button>

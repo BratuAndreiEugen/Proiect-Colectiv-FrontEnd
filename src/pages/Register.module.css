@@ -3,6 +3,7 @@
 }
 
 .meal {
+  display: none;
   width: 230px;
   margin-top: 60px;
 }
@@ -13,6 +14,7 @@
   }
 
   .meal {
+    display: block;
     width: 180px;
     margin-top: 40px;
   }
