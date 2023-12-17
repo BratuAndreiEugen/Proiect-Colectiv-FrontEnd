@@ -55,11 +55,21 @@ video {
   margin-right: 10px;
 }
 
-.follow_button {
+.followButton {
   font-size: 12px;
-  margin-left: 10px;
   text-transform: none;
-  height: 50%;
+  --border-radius: 15px;
+}
+
+.followButtonUnfollow {
+  color: #e4a027;
+  --background: white;
+  --border-style: solid;
+  --box-shadow: none;
+}
+
+.followButtonFollow {
+  text-transform: none;
   color: white;
 }
 

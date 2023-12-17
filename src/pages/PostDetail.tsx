@@ -198,7 +198,11 @@ const PostDetail: React.FC = () => {
                   {recipeDetail.posterUsername !=
                   localStorage.getItem("username") ? (
                     <IonButton
-                      className={classes.follow_button}
+                      className={classes.followButton +
+                        " " +
+                        (following
+                          ? classes.followButtonUnfollow
+                          : classes.followButtonFollow)}
                       size="small"
                       onClick={follow}
                     >

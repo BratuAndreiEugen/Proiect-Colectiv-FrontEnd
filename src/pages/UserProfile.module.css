@@ -21,6 +21,17 @@
 .followButton {
   font-size: 16px;
   text-transform: none;
+  --border-radius: 15px;
+}
+
+.followButtonUnfollow {
+  color: #e4a027;
+  --background: white;
+  --border-style: solid;
+  --box-shadow: none;
+}
+
+.followButtonFollow {
   color: white;
 }
 

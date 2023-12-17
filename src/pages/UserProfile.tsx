@@ -42,7 +42,6 @@ const UserProfile: React.FC = () => {
         } catch (err) {}
 
         const followers: Follow[] = await getFollowingByUsername(username);
-        console.log("FOUND FOLLOWER ? " + followers);
         const loggedUserId = localStorage.getItem("id");
         if (loggedUserId) {
           const a = followers.some(
@@ -88,7 +87,16 @@ const UserProfile: React.FC = () => {
             <div className={classes.header}>
               <h1 className={classes.username}>{username}</h1>
               {username != localStorage.getItem("username") ? (
-                <IonButton className={classes.followButton} onClick={follow}>
+                <IonButton
+                  className={
+                    classes.followButton +
+                    " " +
+                    (following
+                      ? classes.followButtonUnfollow
+                      : classes.followButtonFollow)
+                  }
+                  onClick={follow}
+                >
                   {following ? "Unfollow" : "Follow"}
                 </IonButton>
               ) : (
