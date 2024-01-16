@@ -40,7 +40,7 @@ const TextEditor = ({ onChange }: TextEditorProps) => {
           formats={formats}
           placeholder="write your content ...."
           onChange={onChange}
-          style={{ overflowY: "auto", scrollbarWidth: "none", height: "200px", width: "100%", borderBottom: "1px solid #cccccc" }}
+          style={{ overflowY: "hidden", scrollbarWidth: "none", height: "200px", width: "100%", borderBottom: "1px solid #cccccc" }}
         />
       </div>
     </div>
