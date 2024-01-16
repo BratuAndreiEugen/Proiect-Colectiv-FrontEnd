@@ -66,7 +66,7 @@ const AddRecipe: React.FC = () => {
       const data = {
         title,
         caption: description,
-        posterId: userId,
+        posterId: parseInt(localStorage.getItem("id") ?? ""),
         videoLink: "",
         thumbnailLink: "",
       };
