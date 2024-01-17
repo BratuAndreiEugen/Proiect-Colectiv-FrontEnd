@@ -3,7 +3,12 @@ import PropTypes from "prop-types";
 import { getLogger } from "../utils";
 import { login as loginRequest } from "../requests/authService";
 import { useHistory } from "react-router";
-import { getUserByUsername } from "../requests/userService";
+import {
+  getFollowersByUsername,
+  getFollowingByUsername,
+  getUserByUsername,
+} from "../requests/userService";
+import { User } from "../model/user";
 
 const log = getLogger("AuthProvider");
 
@@ -15,11 +20,14 @@ export interface AuthState {
   isAuthenticating: boolean;
   login?: LoginFn;
   logout?: () => void;
+  toggleFollow?: (user: User) => void;
   username: string;
   password: string;
   token: string;
   userId: number | null;
   bio: string;
+  followers: User[];
+  following: User[];
 }
 
 const initialState: AuthState = {
@@ -31,6 +39,8 @@ const initialState: AuthState = {
   bio: "",
   userId: parseInt(localStorage.getItem("id") ?? ""),
   token: localStorage.getItem("token") ?? "",
+  followers: [],
+  following: [],
 };
 
 export const AuthContext = React.createContext<AuthState>(initialState);
@@ -51,7 +61,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     password,
     userId,
     bio,
+    followers,
+    following,
   } = state;
+
+  useEffect(() => {
+    const getFollowing = async () => {
+      if (username) {
+        const followersList = await getFollowingByUsername(username);
+        const followingList = await getFollowersByUsername(username);
+        setState({ ...state, followers: followersList });
+        setState({ ...state, following: followingList });
+      }
+    };
+
+    getFollowing();
+  }, []);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -64,6 +89,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       fetchUserInfo();
     }
   }, [username]);
+
+  const toggleFollow = (user: User) => {
+    let updatedFollowing = [...following];
+    let exists = false;
+    for (const currentUser of following) {
+      if (currentUser.userId == user.userId) {
+        exists = true;
+        updatedFollowing = following.filter(
+          (currentUser) => user.userId != currentUser.userId
+        );
+      }
+    }
+    if (!exists) updatedFollowing.push(user);
+    setState({ ...state, following: updatedFollowing });
+  };
 
   const login = useCallback<LoginFn>(loginCallback, []);
 
@@ -94,6 +134,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     password,
     userId,
     bio,
+    followers,
+    following,
+    toggleFollow,
   };
 
   log("render");
@@ -127,7 +170,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           ...state,
           isAuthenticating: true,
         });
-        const { username, password} = state;
+        const { username, password } = state;
         const authToken = await loginRequest(username, password);
         const response = await getUserByUsername(username);
         log("USERNAME " + username);
@@ -135,8 +178,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         log(response);
         setState({
           ...state,
-          userId: response.id
-        })
+          userId: response.id,
+        });
         if (canceled) {
           return;
         }
@@ -149,8 +192,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
         localStorage.setItem("token", authToken);
         localStorage.setItem("username", username);
-        if(response.id)
-          localStorage.setItem("id", response.id.toString());
+        if (response.id) localStorage.setItem("id", response.id.toString());
       } catch (error) {
         if (canceled) {
           return;

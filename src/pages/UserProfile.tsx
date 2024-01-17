@@ -18,6 +18,7 @@ import { User, UserShort } from "../model/user";
 import { Follow } from "../model/Follow";
 
 const UserProfile: React.FC = () => {
+  const { toggleFollow } = useContext(AuthContext);
   const params = useParams() as any;
   const { userId: username } = params;
   const [viewedUser, setViewedUser] = useState<UserShort | null>(null);
@@ -69,6 +70,12 @@ const UserProfile: React.FC = () => {
           userName: viewedUser.username,
           followeeId: parseInt(loggedUserId),
         });
+        toggleFollow &&
+          toggleFollow({
+            username: viewedUser.username,
+            userId: viewedUser.id,
+            description: "",
+          });
         setFollowing(!following);
       }
     } catch (error) {

@@ -1,50 +1,24 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
-import {
-  getFollowingByUsername,
-  getFollowersByUsername,
-} from "../requests/userService";
 import {
   IonButton,
   IonContent,
   IonFooter,
-  IonIcon,
   IonImg,
   IonList,
   IonMenu,
   IonText,
 } from "@ionic/react";
 import classes from "./Drawer.module.css";
-import { personCircleOutline } from "ionicons/icons";
 import { useHistory } from "react-router";
 
 interface DrawerProps {
   contentId: string;
 }
 
-interface User {
-  id: number;
-  username: string;
-}
-
 const Drawer = ({ contentId }: DrawerProps) => {
-  const { username, logout } = useContext(AuthContext);
-  const [followers, setFollowers] = useState<[User]>();
-  const [following, setFollowing] = useState<[User]>();
+  const { username, logout, followers, following } = useContext(AuthContext);
   const history = useHistory();
-
-  useEffect(() => {
-    const getFollowing = async () => {
-      if (username) {
-        const followersList = await getFollowingByUsername(username);
-        const followingList = await getFollowersByUsername(username);
-        setFollowers(followersList);
-        setFollowing(followingList);
-      }
-    };
-
-    getFollowing();
-  }, []);
 
   const redirectToUserProfile = (followerUsername: string) => {
     if (followerUsername) {
@@ -121,6 +95,7 @@ const Drawer = ({ contentId }: DrawerProps) => {
                         gap: "2px",
                         cursor: "pointer",
                       }}
+                      key={username}
                       onClick={() => redirectToUserProfile(user.username)}
                     >
                       <IonImg

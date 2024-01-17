@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
 import { IonButton, IonContent, IonPage } from "@ionic/react";
@@ -20,6 +20,7 @@ import {
   followWithUsername,
   getFollowingByUsername,
 } from "../requests/userService";
+import { AuthContext } from "../context/AuthProvider";
 
 interface RecipeDTO {
   id: number;
@@ -40,6 +41,7 @@ interface ImageDTO {
 }
 
 const PostDetail: React.FC = () => {
+  const { toggleFollow } = useContext(AuthContext);
   const { postId } = useParams<{ postId: string }>();
   const [recipeDetail, setRecipeDetail] = useState<RecipeDTO | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -51,23 +53,8 @@ const PostDetail: React.FC = () => {
   const [following, setFollowing] = useState(false);
 
   useEffect(() => {
-    const fetchRecipeDetail = async () => {
+    const fetchUserRatings = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/v1/recipes/${postId}`
-        );
-        const recipeData: RecipeDTO = response.data;
-        setRecipeDetail(recipeData);
-        const followers: Follow[] = await getFollowingByUsername(
-          recipeData.posterUsername
-        );
-        const loggedUserId = localStorage.getItem("id");
-        if (loggedUserId) {
-          setFollowing(
-            followers.some((follow) => follow.id === parseInt(loggedUserId))
-          );
-        }
-
         const idStr = localStorage.getItem("id");
         const id = idStr !== null ? Number.parseInt(idStr) : 0;
         const resp = await axios.get(
@@ -106,9 +93,32 @@ const PostDetail: React.FC = () => {
       }
     };
 
-    fetchRecipeDetail();
+    fetchUserRatings();
     fetchRecipeExtraPhotos();
   }, [postId]);
+
+  useEffect(() => {
+    const fetchRecipeDetail = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/v1/recipes/${postId}`
+        );
+        const recipeData: RecipeDTO = response.data;
+        setRecipeDetail(recipeData);
+        const followers: Follow[] = await getFollowingByUsername(
+          recipeData.posterUsername
+        );
+        const loggedUserId = localStorage.getItem("id");
+        if (loggedUserId) {
+          setFollowing(
+            followers.some((follow) => follow.id === parseInt(loggedUserId))
+          );
+        }
+      } catch (error) {}
+    };
+
+    fetchRecipeDetail();
+  }, [postId, healthy, nutritive, tasty, recipeDetail]);
 
   const redirectToUserPage = async () => {
     try {
@@ -152,6 +162,12 @@ const PostDetail: React.FC = () => {
           followeeId: parseInt(loggedUserId),
         });
         setFollowing(!following);
+        toggleFollow &&
+          toggleFollow({
+            username: recipeDetail?.posterUsername,
+            userId: recipeDetail.posterId.toString(),
+            description: ""
+          });
       }
     } catch (error) {
       console.error("Error sending follow request:", error);

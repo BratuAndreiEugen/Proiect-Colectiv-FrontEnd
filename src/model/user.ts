@@ -4,11 +4,11 @@ export interface User {
     userId: string;
     username: string;
     description: string;
-    recipes: Recipe[];
+    recipes?: Recipe[];
 }
 
 export interface UserShort {
-    id: number;
+    id: string;
     username: string;
     description: string;
 }
