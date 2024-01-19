@@ -51,6 +51,7 @@ const PostDetail: React.FC = () => {
   const [nutritive, setNutritive] = useState(0);
   const [tasty, setTasty] = useState(0);
   const [following, setFollowing] = useState(false);
+  const [poster, setPoster] = useState("");
 
   useEffect(() => {
     const fetchUserRatings = async () => {
@@ -113,7 +114,7 @@ const PostDetail: React.FC = () => {
     };
 
     fetchIsFollowingUser();
-  }, [postId]);
+  }, [postId, poster]);
 
   useEffect(() => {
     const fetchRecipeDetail = async () => {
@@ -123,6 +124,7 @@ const PostDetail: React.FC = () => {
         );
         const recipeData: RecipeDTO = response.data;
         setRecipeDetail(recipeData);
+        setPoster(recipeData.posterUsername)
       } catch (error) {}
     };
 
