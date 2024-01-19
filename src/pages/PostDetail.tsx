@@ -18,7 +18,7 @@ import { RatingRequest } from "../model/Rating";
 import { Follow } from "../model/Follow";
 import {
   followWithUsername,
-  getFollowingByUsername,
+  getFollowersByUsername,
 } from "../requests/userService";
 import { AuthContext } from "../context/AuthProvider";
 
@@ -98,15 +98,10 @@ const PostDetail: React.FC = () => {
   }, [postId]);
 
   useEffect(() => {
-    const fetchRecipeDetail = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8080/v1/recipes/${postId}`
-        );
-        const recipeData: RecipeDTO = response.data;
-        setRecipeDetail(recipeData);
-        const followers: Follow[] = await getFollowingByUsername(
-          recipeData.posterUsername
+    const fetchIsFollowingUser = async () => {
+      if (recipeDetail) {
+        const followers: Follow[] = await getFollowersByUsername(
+          recipeDetail?.posterUsername
         );
         const loggedUserId = localStorage.getItem("id");
         if (loggedUserId) {
@@ -114,6 +109,20 @@ const PostDetail: React.FC = () => {
             followers.some((follow) => follow.id === parseInt(loggedUserId))
           );
         }
+      }
+    };
+
+    fetchIsFollowingUser();
+  }, [postId]);
+
+  useEffect(() => {
+    const fetchRecipeDetail = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/v1/recipes/${postId}`
+        );
+        const recipeData: RecipeDTO = response.data;
+        setRecipeDetail(recipeData);
       } catch (error) {}
     };
 
@@ -174,25 +183,6 @@ const PostDetail: React.FC = () => {
       setLoading(false);
     }
   };
-
-  //limit calls
-  const [debouncedHealthy, setDebouncedHealthy] = useState(0);
-  const [debouncedNutritive, setDebouncedNutritive] = useState(0);
-  const [debouncedTasty, setDebouncedTasty] = useState(0);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setDebouncedHealthy(healthy);
-      setDebouncedNutritive(nutritive);
-      setDebouncedTasty(tasty);
-    }, 1000);
-
-    return () => clearTimeout(timeoutId);
-  }, [healthy, nutritive, tasty]);
-
-  // useEffect(() => {
-  //   postNewRating();
-  // }, [debouncedHealthy, debouncedNutritive, debouncedTasty]);
 
   return (
     <>

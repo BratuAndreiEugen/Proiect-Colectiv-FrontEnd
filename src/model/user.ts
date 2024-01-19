@@ -10,5 +10,5 @@ export interface User {
 export interface UserShort {
     id: string;
     username: string;
-    description: string;
+    bio: string;
 }

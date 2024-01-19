@@ -8,7 +8,7 @@ import {
   getFollowingByUsername,
   getUserByUsername,
 } from "../requests/userService";
-import { User } from "../model/user";
+import { User, UserShort } from "../model/user";
 
 const log = getLogger("AuthProvider");
 
@@ -68,10 +68,31 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const getFollowing = async () => {
       if (username) {
-        const followersList = await getFollowingByUsername(username);
-        const followingList = await getFollowersByUsername(username);
-        setState({ ...state, followers: followersList });
-        setState({ ...state, following: followingList });
+        const followersList: UserShort[] = await getFollowersByUsername(
+          username
+        );
+        const followingList: UserShort[] = await getFollowingByUsername(
+          username
+        );
+        const userFollowersList: User[] = followersList.map(
+          ({ bio, id, username }) => ({
+            userId: id,
+            description: bio,
+            username,
+          })
+        );
+        const userFollowingList: User[] = followingList.map(
+          ({ bio, id, username }) => ({
+            userId: id,
+            description: bio,
+            username,
+          })
+        );
+        setState({
+          ...state,
+          followers: userFollowersList,
+          following: userFollowingList,
+        });
       }
     };
 

@@ -68,6 +68,7 @@ const Drawer = ({ contentId }: DrawerProps) => {
                         gap: "2px",
                         cursor: "pointer",
                       }}
+                      key={user.username}
                       onClick={() => redirectToUserProfile(user.username)}
                     >
                       <IonImg
@@ -95,7 +96,7 @@ const Drawer = ({ contentId }: DrawerProps) => {
                         gap: "2px",
                         cursor: "pointer",
                       }}
-                      key={username}
+                      key={user.username}
                       onClick={() => redirectToUserProfile(user.username)}
                     >
                       <IonImg

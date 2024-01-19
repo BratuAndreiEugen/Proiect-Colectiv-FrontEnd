@@ -42,7 +42,7 @@ const UserProfile: React.FC = () => {
           setRecipes(recipesResponse);
         } catch (err) {}
 
-        const followers: Follow[] = await getFollowingByUsername(username);
+        const followers: Follow[] = await getFollowersByUsername(username);
         const loggedUserId = localStorage.getItem("id");
         if (loggedUserId) {
           const a = followers.some(

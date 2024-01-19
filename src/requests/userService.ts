@@ -35,28 +35,28 @@ export const getFollowersId = (id: number) => {
   );
 };
 
-export const getFollowingById = (id: number) => {
+export const getFollowersById = (id: number) => {
   return withLogs(
     axios.get(`${baseUrl}/follow/getFollowingUsers?id=${id}`, config),
     "getFollowingById"
   );
 };
 
-export const getFollowingByUsername = (username: string) => {
+export const getFollowersByUsername = (username: string) => {
   return withLogs(
     axios.get(`${baseUrl}/follow/getFollowingUsersWithUsername?username=${username}`, config),
     "getFollowingByUsername"
   );
 };
 
-export const getFollowersById = (id: number) => {
+export const getFollowingById = (id: number) => {
   return withLogs(
     axios.get(`${baseUrl}/follow/getFollowersUsers?id=${id}`, config),
     "getFollowersById"
   );
 };
 
-export const getFollowersByUsername = (username: string) => {
+export const getFollowingByUsername = (username: string) => {
   return withLogs(
     axios.get(`${baseUrl}/follow/getFollowersUsersWithUsername?username=${username}`, config),
     "getFollowersByUsername"
